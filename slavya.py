@@ -421,7 +421,7 @@ async def handle_message(message):
 			if message.reply_to_message!=None:
 				if message.from_user.id!=message.reply_to_message.from_user.id:
 					user_1 = await bot.get_chat_member(message.chat.id, message.from_user.id)
-					user_2 = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.first_name)
+					user_2 = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 					if user_1.status not in ['administrator', 'creator']:
 						await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date = time.time())
 					if user_2.status not in ['administrator', 'creator']:
