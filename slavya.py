@@ -414,5 +414,17 @@ async def handle_message(message):
 				text += f'\n{i.user.first_name} - @{i.user.username} - {i.user.id}'
 			await bot.send_message(message.chat.id, text)
 
+@db.message_handler(content_types=['text'])
+async def handle_message(message):
+	if message.text=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
+		if message.chat.type!='private':
+			if message.reply_to_message!=None:
+				try:
+					await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date = time.time())
+					await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
+				except:
+					pass
+				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.', reply_to_message_id=message.message_id, parse_mode='markdown' )
+
 if __name__ == '__main__':
     executor.start_polling(db, skip_updates=True)
