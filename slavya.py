@@ -113,7 +113,7 @@ async def handler_new_member(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!= None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -139,7 +139,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member( message.chat.id, message.reply_to_message.from_user.id)
@@ -165,7 +165,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_promote_members==True:
 				if message.reply_to_message!= None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -185,7 +185,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_promote_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -208,7 +208,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -235,7 +235,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -257,7 +257,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -282,7 +282,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_pin_messages==True:
 				if message.reply_to_message!=None:
 					await bot.pin_chat_message(message.chat.id, message.reply_to_message.message_id)
@@ -298,7 +298,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018 )
+			prom = await bot.get_chat_member(message.chat.id, 1303468919 )
 			if prom.can_pin_messages == True:
 				await bot.unpin_chat_message(message.chat.id)
 				await bot.delete_message(message.chat.id, message.message_id)
@@ -311,7 +311,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_delete_messages==True:
 				if message.reply_to_message!=None:
 					await bot.delete_message(message.chat.id, message.reply_to_message.message_id)
@@ -327,7 +327,7 @@ async def handle_message(message):
 async def handle_message(message):
 	if message.chat.type!='private':
 		if message.from_user.id in ['creator', 'administrator']:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_delete_messages==True:
 				if message.reply_to_message!=None:
 					i = message.reply_to_message.message_id
