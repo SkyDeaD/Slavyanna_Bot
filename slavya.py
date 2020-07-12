@@ -112,7 +112,8 @@ async def handler_new_member(message):
 @db.message_handler(commands=['mute'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!= None:
@@ -138,7 +139,8 @@ async def handle_message(message):
 @db.message_handler(commands=['unmute'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
@@ -164,7 +166,8 @@ async def handle_message(message):
 @db.message_handler(commands=['promote'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_promote_members==True:
 				if message.reply_to_message!= None:
@@ -184,7 +187,8 @@ async def handle_message(message):
 @db.message_handler(commands=['demote'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_promote_members==True:
 				if message.reply_to_message!=None:
@@ -207,7 +211,8 @@ async def handle_message(message):
 @db.message_handler(commands=['kick'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
@@ -234,7 +239,8 @@ async def handle_message(message):
 @db.message_handler(commands=['ban'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
@@ -256,7 +262,8 @@ async def handle_message(message):
 @db.message_handler(commands=['unban'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
@@ -281,7 +288,8 @@ async def handle_message(message):
 @db.message_handler(commands=['pin'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_pin_messages==True:
 				if message.reply_to_message!=None:
@@ -297,7 +305,8 @@ async def handle_message(message):
 @db.message_handler(commands=['unpin'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919 )
 			if prom.can_pin_messages == True:
 				await bot.unpin_chat_message(message.chat.id)
@@ -310,7 +319,8 @@ async def handle_message(message):
 @db.message_handler(commands=['del'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_delete_messages==True:
 				if message.reply_to_message!=None:
@@ -326,7 +336,8 @@ async def handle_message(message):
 @db.message_handler(commands=['purge'])
 async def handle_message(message):
 	if message.chat.type!='private':
-		if message.from_user.id in ['creator', 'administrator']:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_delete_messages==True:
 				if message.reply_to_message!=None:
