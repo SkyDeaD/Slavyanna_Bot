@@ -420,11 +420,8 @@ async def handle_message(message):
 		if message.chat.type!='private':
 			if message.reply_to_message!=None:
 				if message.from_user.id!=message.reply_to_message.from_user.id:
-					try:
-						await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date = time.time())
-						await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
-					except:
-						pass
+					await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date = time.time())
+					await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
 					await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.', reply_to_message_id=message.message_id, parse_mode='markdown' )
 
 if __name__ == '__main__':
