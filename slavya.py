@@ -9,6 +9,8 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot('1303468919:AAGa9vt8IXsEf1M9SOAUjeN1qwrjv6FEYE0')
 db = Dispatcher(bot)
 
+
+
 @db.message_handler(commands=['start'])
 async def start_handler(message):
 	if message.chat.type=='private':
@@ -110,7 +112,7 @@ async def handler_new_member(message):
 				await bot.send_message(message.chat.id, F'Добро пожаловать, {user.first_name}', reply_to_message_id=message.message_id)
 
 @db.message_handler(commands=['mute'])
-async def handle_message(message):
+async def handle_mute(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -137,7 +139,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['unmute'])
-async def handle_message(message):
+async def handle_unmute(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -164,7 +166,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['promote'])
-async def handle_message(message):
+async def handle_promote(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -185,7 +187,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['demote'])
-async def handle_message(message):
+async def handle_demote(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -209,11 +211,10 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['kick'])
-async def handle_message(message):
+async def handle_kick(message):
 	if message.chat.type!='private':
-		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-		if usera.status in ['administrator', 'creator']:
-			prom = await bot.get_chat_member(message.chat.id, 1303468919)
+		if message.from_user.id in adminlist:
+			prom = await bot.get_chat_member(message.chat.id, 1166033018)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -233,11 +234,9 @@ async def handle_message(message):
 					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id = message.message_id)			
 			else:
 				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
-		else:
-			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['ban'])
-async def handle_message(message):
+async def handle_ban(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -260,7 +259,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['unban'])
-async def handle_message(message):
+async def handle_unban(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -286,7 +285,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['pin'])
-async def handle_message(message):
+async def handle_pin(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -303,7 +302,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['unpin'])
-async def handle_message(message):
+async def handle_unpin(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -317,7 +316,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['del'])
-async def handle_message(message):
+async def handle_del(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -334,7 +333,7 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['purge'])
-async def handle_message(message):
+async def handle_purge(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
@@ -356,13 +355,14 @@ async def handle_message(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=["report"])
-async def mandle_message(message):
+async def mandle_report(message):
 	if message.chat.type!='private':
 		if message.reply_to_message!= None:
 			adm = await bot.get_chat_administrators(message.chat.id)
 			text = 'На данное сообщение поступила жалоба.\n\n'
 			for i in adm:
-				text += f"\n@{i.user.username}"
+				if i.user.is_bot==False:
+					text += f"\n@{i.user.username}"
 			await bot.send_message(message.chat.id, text, reply_to_message_id=message.reply_to_message.message_id)
 		else:
 			await bot.send_message(message.chat.id, " Выберите сообщение, на которое хотите пожаловаться. ", reply_to_message_id = message.message_id)
@@ -377,7 +377,7 @@ async def handle_message(message):
 ''', reply_to_message_id = message.message_id, parse_mode='markdown')
 
 @db.message_handler(commands=['info'])
-async def handle_message(message):
+async def handle_info(message):
 	if message.chat.type!='private':
 		if message.reply_to_message!= None:
 			adm = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -405,17 +405,18 @@ async def handle_message(message):
 ''', parse_mode='markdown')
 
 @db.message_handler(commands=['admins'])
-async def handle_message(message):
+async def handle_admins(message):
 	if message.chat.type!='private':
 		if message.chat.type!='private':
 			adm = await bot.get_chat_administrators(message.chat.id)
 			text = 'Администраторы чата:\n'
 			for i in adm:
-				text += f'\n{i.user.first_name} - @{i.user.username} - {i.user.id}'
+				if i.user.is_bot==False:
+					text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
 			await bot.send_message(message.chat.id, text)
 
 @db.message_handler(content_types=['text'])
-async def handle_message(message):
+async def handle_vlastilinus(message):
 	if message.text=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
 		if message.chat.type!='private':
 			if message.reply_to_message!=None:
