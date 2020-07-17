@@ -3,13 +3,12 @@ import time
 import os
 
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 logging.basicConfig(level=logging.INFO)
 
 bot = Bot('1303468919:AAGa9vt8IXsEf1M9SOAUjeN1qwrjv6FEYE0')
 db = Dispatcher(bot)
-
-
 
 @db.message_handler(commands=['start'])
 async def start_handler(message):
@@ -198,7 +197,7 @@ async def handle_demote(message):
 					if user.status in ['administrator', 'creator']:
 						try:
 							await bot.promote_chat_member(message.chat.id, message.reply_to_message.from_user.id, can_change_info=False, can_delete_messages=False, can_invite_users=False, can_restrict_members=False, can_pin_messages=False, can_promote_members=False)
-							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) понижен(а)!', reply_to_message_id = message.message_id, parse_mode = 'markdown')
+							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) понижен(а)!', reply_to_message_id = message.message_id, parse_mode='markdown')
 						except:
 							await bot.send_message(message.chat.id, ' Я не могу понизить данного пользвателя. ', reply_to_message_id = message.message_id)
 					else:
@@ -214,7 +213,7 @@ async def handle_demote(message):
 async def handle_kick(message):
 	if message.chat.type!='private':
 		if message.from_user.id in adminlist:
-			prom = await bot.get_chat_member(message.chat.id, 1166033018)
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -223,17 +222,17 @@ async def handle_kick(message):
 						if user.status=='member':
 							sti = open('kick.webp', 'rb')
 							await bot.kick_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) решил(а) отойти 😄', reply_to_message_id = message.message_id, parse_mode = 'markdown')
+							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) решил(а) отойти 😄', reply_to_message_id=message.message_id, parse_mode='markdown')
 							await bot.send_sticker(message.chat.id, sti)
 							await bot.unban_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 						else:
-							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', reply_to_message_id = message.message_id, parse_mode = 'markdown')
+							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', reply_to_message_id=message.message_id, parse_mode='markdown')
 					else:
-						await bot.send_message(message.chat.id, ' Я не могу кикнуть администратора... ', reply_to_message_id = message.message_id)
+						await bot.send_message(message.chat.id, ' Я не могу кикнуть администратора... ', reply_to_message_id=message.message_id)
 				else:
-					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id = message.message_id)			
+					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id=message.message_id)			
 			else:
-				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
+				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id=message.message_id)
 
 @db.message_handler(commands=['ban'])
 async def handle_ban(message):
@@ -367,7 +366,6 @@ async def mandle_report(message):
 		else:
 			await bot.send_message(message.chat.id, " Выберите сообщение, на которое хотите пожаловаться. ", reply_to_message_id = message.message_id)
 
-
 @db.message_handler(commands=['me'])
 async def handle_message(message):
 	await bot.send_message( message.chat.id, F''' 
@@ -407,13 +405,12 @@ async def handle_info(message):
 @db.message_handler(commands=['admins'])
 async def handle_admins(message):
 	if message.chat.type!='private':
-		if message.chat.type!='private':
-			adm = await bot.get_chat_administrators(message.chat.id)
-			text = 'Администраторы чата:\n'
-			for i in adm:
-				if i.user.is_bot==False:
-					text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
-			await bot.send_message(message.chat.id, text)
+		adm = await bot.get_chat_administrators(message.chat.id)
+		text = 'Администраторы чата:\n'
+		for i in adm:
+			if i.user.is_bot==False:
+				text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
+		await bot.send_message(message.chat.id, text)
 
 @db.message_handler(content_types=['text'])
 async def handle_vlastilinus(message):
