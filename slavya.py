@@ -212,7 +212,8 @@ async def handle_demote(message):
 @db.message_handler(commands=['kick'])
 async def handle_kick(message):
 	if message.chat.type!='private':
-		if message.from_user.id in adminlist:
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
 				if message.reply_to_message!=None:
