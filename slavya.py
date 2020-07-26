@@ -123,7 +123,7 @@ async def handle_mute(message):
 						u_mute = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 						if u_mute.can_send_messages==True or u_mute.can_send_messages==None:
 							await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) потерял голос.', reply_to_message_id =message.reply_to_message.message_id, parse_mode='markdown')
-							await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = 0)
+							await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
 							sti = open('mute.webp', 'rb')
 							await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
 						else:
