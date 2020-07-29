@@ -413,6 +413,11 @@ async def handle_admins(message):
 				text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
 		await bot.send_message(message.chat.id, text)
 
+@db.message_handler(regexp='фулл')
+async def full_ban(message):
+	if message.chat.type!='private':
+		await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
+
 @db.message_handler(content_types=['text'])
 async def handle_vlastilinus(message):
 	if message.text=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
