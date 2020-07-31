@@ -33,6 +33,8 @@ async def help_handler(message):
 
 *🤐Mute* - кидает выбранного пользователя в мут.
 
+*😬Amute* - попытка замутить администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
+
 *😀Unmute* - размучевает выбранного пользователя.
 
 *😵Ban* - кидает в бан выбранного пользователя.
@@ -74,6 +76,8 @@ async def help_handler(message):
 *🌟admins* - список администраторов.
 
 *🤐Mute* - кидает выбранного пользователя в мут.
+
+*😬Amute* - попытка замутить администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
 
 *😀Unmute* - размучевает выбранного пользователя.
 
@@ -117,7 +121,7 @@ async def handle_mute(message):
 		if usera.status in ['administrator', 'creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_restrict_members==True:
-				if message.reply_to_message!= None:
+				if message.reply_to_message!=None:
 					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 					if user.status not in ['administrator', 'creator']:
 						u_mute = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -136,6 +140,28 @@ async def handle_mute(message):
 				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
 		else:
 			await bot.delete_message(message.chat.id, message.message_id)
+
+@db.message_handler(commands=['amute'])
+async def handle_mute(message):
+	if message.chat.type!='private':
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['creator']:
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
+			if prom.can_restrict_members==True:
+				if message.reply_to_message!=None:
+					try:
+						await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) потерял голос.', reply_to_message_id =message.reply_to_message.message_id, parse_mode='markdown')
+						await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date=time.time())
+						sti = open('mute.webp', 'rb')
+						await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
+					except:
+						await bot.send_message(message.chat.id, 'Я не могу замутить данного пользователя', reply_to_message_id=message.message_id)
+				else:
+					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id=message.message_id)
+			else:
+				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
+		else:
+			await bot.send_message(message.chat.id, 'У вас нет прав на выполнение данной комманды!', reply_to_message_id=message.message_id)
 
 @db.message_handler(commands=['unmute'])
 async def handle_unmute(message):
