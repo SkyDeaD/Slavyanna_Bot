@@ -18,9 +18,12 @@ async def start_handler(message):
 @db.message_handler(commands=['help'])
 async def help_handler(message):
 	if message.chat.type=='private':
-		q = await bot.get_chat( 577096232 )
+		q = await bot.get_chat(577096232)
+		c = await bot.get_chat(-1001183567504)
 		await message.reply(F'''
-Я - бот Славя, разработанный 👉[{q.first_name}](tg://user?id=577096232)👈 для помощи в управлении группами.
+Я - бот Славя, разработанный 👉[{q.first_name}](tg://user?id=577096232)👈 
+
+Бот создавался для конфы 👉[{c.title}](https://t.me/YgoloMasteraSlavi)👈
 
 
 На данный момент доступны следующие команды:
@@ -39,9 +42,13 @@ async def help_handler(message):
 
 *😵Ban* - кидает в бан выбранного пользователя.
 
+*😠Aban* - попытка забанить администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
+
 *😃Unban* - разбанивает выбранного пользователя.
 
 *🤕Kick* - выгоняет выбранного пользователя.
+
+*😣Akick* - попытка кикнуть администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
 
 *📌Pin* - закрепляет выбранное сообщение.
 
@@ -51,9 +58,9 @@ async def help_handler(message):
 
 *🧹Purge* - чистит чат. Удаляет выбранное сообщение и всё то, что ниже его.
 
-*⏫Promote* - повышает выбранного пользователя до администратора.
+*⏫Promote* - повышает выбранного пользователя до администратора; доступно только владельцу чата.
 
-*⏬Demote* - понижает выбранного администратора.
+*⏬Demote* - понижает выбранного администратора; доступно только владельцу чата.
 
 
 Для полноценный работы в группе мне требуются следующие разрешения:
@@ -83,9 +90,13 @@ async def help_handler(message):
 
 *😵Ban* - кидает в бан выбранного пользователя.
 
+*😠Aban* - попытка забанить администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
+
 *😃Unban* - разбанивает выбранного пользователя.
 
 *🤕Kick* - выгоняет выбранного пользователя.
+
+*😣Akick* - попытка кикнуть администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
 
 *📌Pin* - закрепляет выбранное сообщение.
 
@@ -95,9 +106,9 @@ async def help_handler(message):
 
 *🧹Purge* - чистит чат. Удаляет выбранное сообщение и всё то, что ниже его.
 
-*⏫Promote* - повышает выбранного пользователя до администратора.
+*⏫Promote* - повышает выбранного пользователя до администратора; доступно только владельцу чата.
 
-*⏬Demote* - понижает выбранного администратора.
+*⏬Demote* - понижает выбранного администратора; доступно только владельцу чата.
 ''', parse_mode = 'markdown')
 		time.sleep(60)
 		await bot.delete_message(message.chat.id, help_msg.message_id)
@@ -112,7 +123,7 @@ async def handler_new_member(message):
 			for user in message.new_chat_members:
 				sti = open('welcome.webp', 'rb')
 				await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-				await bot.send_message(message.chat.id, F'Добро пожаловать, {user.first_name}', reply_to_message_id=message.message_id)
+				await bot.send_message(message.chat.id, F'Добро пожаловать, {user.first_name}!', reply_to_message_id=message.message_id)
 
 @db.message_handler(commands=['mute'])
 async def handle_mute(message):
@@ -142,7 +153,7 @@ async def handle_mute(message):
 			await bot.delete_message(message.chat.id, message.message_id)
 
 @db.message_handler(commands=['amute'])
-async def handle_mute(message):
+async def handle_amute(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['creator']:
@@ -194,7 +205,7 @@ async def handle_unmute(message):
 async def handle_promote(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-		if usera.status in ['administrator', 'creator']:
+		if usera.status in ['creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_promote_members==True:
 				if message.reply_to_message!= None:
@@ -215,7 +226,7 @@ async def handle_promote(message):
 async def handle_demote(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-		if usera.status in ['administrator', 'creator']:
+		if usera.status in ['creator']:
 			prom = await bot.get_chat_member(message.chat.id, 1303468919)
 			if prom.can_promote_members==True:
 				if message.reply_to_message!=None:
@@ -261,6 +272,29 @@ async def handle_kick(message):
 			else:
 				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id=message.message_id)
 
+@db.message_handler(commands=['akick'])
+async def handle_akick(message):
+	if message.chat.type!='private':
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['creator']:
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
+			if prom.can_restrict_members==True:
+				if message.reply_to_message!=None:
+					try:
+						sti = open('kick.webp', 'rb')
+						await bot.kick_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+						await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) решил(а) отойти 😄', reply_to_message_id=message.message_id, parse_mode='markdown')
+						await bot.send_sticker(message.chat.id, sti)
+						await bot.unban_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+					except:
+						await bot.send_message(message.chat.id, 'Я не могу кикнуть данного пользователя', reply_to_message_id=message.message_id)
+				else:
+					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id=message.message_id)
+			else:
+				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
+		else:
+			await bot.send_message(message.chat.id, 'У вас нет прав на выполнение данной комманды!', reply_to_message_id=message.message_id)
+
 @db.message_handler(commands=['ban'])
 async def handle_ban(message):
 	if message.chat.type!='private':
@@ -283,6 +317,28 @@ async def handle_ban(message):
 				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
 		else:
 			await bot.delete_message(message.chat.id, message.message_id)
+
+@db.message_handler(commands=['aban'])
+async def handle_aban(message):
+	if message.chat.type!='private':
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['creator']:
+			prom = await bot.get_chat_member(message.chat.id, 1303468919)
+			if prom.can_restrict_members==True:
+				if message.reply_to_message!=None:
+					try:
+						sti = open('ban.webp', 'rb')
+						await bot.kick_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+						await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) решил(а) отойти, долгосрочно...🙂', reply_to_message_id = message.message_id, parse_mode = 'markdown')
+						await bot.send_sticker(message.chat.id, sti )
+					except:
+						await bot.send_message(message.chat.id, 'Я не могу забанить данного пользователя', reply_to_message_id=message.message_id)
+				else:
+					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id=message.message_id)
+			else:
+				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
+		else:
+			await bot.send_message(message.chat.id, 'У вас нет прав на выполнение данной комманды!', reply_to_message_id=message.message_id)
 
 @db.message_handler(commands=['unban'])
 async def handle_unban(message):
@@ -438,6 +494,14 @@ async def handle_admins(message):
 			if i.user.is_bot==False:
 				text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
 		await bot.send_message(message.chat.id, text)
+
+@db.message_handler(commands=['send'])
+async def handle_send(message):
+	if message.chat.type=='private':
+		if message.from_user.id==577096232:
+			if message.reply_to_message!= None:
+				send = message.reply_to_message.text
+				await bot.send_message(-1001183567504, send)
 
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
