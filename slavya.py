@@ -526,8 +526,13 @@ async def tyanka(message):
 			users.update_one({'id':609565291}, {'$inc':{'times':1}})
 			for time in users.find({'id':609565291}):
 				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет Цербера' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
-				sti = open('ceb.webp', 'rb')
-				await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
+				i = random.randint(1,2)
+				if i == 1:
+					sti = open('ceb1.webp', 'rb')
+					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
+				elif i == 2:
+					sti = open('ceb2.webp', 'rb')
+					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
 
 @db.message_handler(regexp='цербер')
 async def ceb(message):
@@ -539,12 +544,6 @@ async def ceb(message):
 		elif i == 2:
 			sti = open('ceb2.webp', 'rb')
 			await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-
-@db.message_handler(regexp='хочу')
-async def hotet(message):
-	if message.chat.type!='private':
-		if message.from_user.id!=609565291:
-			await bot.send_message(message.chat.id, 'Перехочешь.', reply_to_message_id=message.message_id)		
 
 @db.message_handler(content_types=['text'])
 async def handle_text(message):
