@@ -528,7 +528,7 @@ async def tyanka(message):
 
 @db.message_handler(content_types=['text'])
 async def handle_text(message):
-	if message.text.lower=='властилинус пенитратус':
+	if message.text.lower()=='властилинус пенитратус':
 		if message.chat.type!='private':
 			if message.reply_to_message!=None:
 				if message.from_user.id!=message.reply_to_message.from_user.id:
