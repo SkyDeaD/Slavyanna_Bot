@@ -515,7 +515,7 @@ async def full_ban(message):
 	if message.chat.type!='private':
 		await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
 
-@db.message_handler(regexp='тянку хочу')
+@db.message_handler(regexp='цербера хочу')
 async def tyanka(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==609565291:
 		x = users.find_one({'id':message.from_user.id})
@@ -524,7 +524,7 @@ async def tyanka(message):
 		else:
 			users.update_one({'id':609565291}, {'$inc':{'times':1}})
 			for time in users.find({'id':609565291}):
-				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет тянку' + ' ' +str(time['times']) + ' ' + 'раз.', parse_mode='markdown')
+				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет Цербера' + ' ' +str(time['times']) + ' ' + 'раз.', parse_mode='markdown')
 
 @db.message_handler(content_types=['text'])
 async def handle_text(message):
@@ -539,7 +539,6 @@ async def handle_text(message):
 					if user_2.status not in ['administrator', 'creator']:
 						await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
 					await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.', reply_to_message_id=message.message_id, parse_mode='markdown' )
-
 
 
 if __name__ == '__main__':
