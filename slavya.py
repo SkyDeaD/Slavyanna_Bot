@@ -11,9 +11,11 @@ bot = Bot('1303468919:AAGa9vt8IXsEf1M9SOAUjeN1qwrjv6FEYE0')
 db = Dispatcher(bot)
 
 logging.basicConfig(level=logging.INFO)
-client = pymongo.MongoClient('mongodb+srv://SkyDeaD:<GamerVD76>@aliceskybotandother-ik6lu.mongodb.net/<sl>?retryWrites=true&w=majority')
-dbs = client.sl
-users=dbs.users
+client = pymongo.MongoClient('mongodb+srv://SkyDeaD:GamerVD76@aliceskybotandother-ik6lu.mongodb.net/sl?retryWrites=true&w=majority')
+dbm = client.sl
+users=dbm.users
+
+tyan=['xочу тяночку', 'xочю тяночку', 'хочу тянку', 'хочю тянку', 'тяночку хочу', 'тяночку хочю', 'тянку хочу', 'тянку хочю']
 
 @db.message_handler(commands=['start'])
 async def start_handler(message):
@@ -513,9 +515,20 @@ async def full_ban(message):
 	if message.chat.type!='private':
 		await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
 
+@db.message_handler(regexp='тянку хочу')
+async def tyanka(message):
+	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==609565291:
+		x = users.find_one({'id':message.from_user.id})
+		if x == None:
+			users.insert_one({'id':609565291, 'times':0})
+		else:
+			users.update_one({'id':609565291}, {'$inc':{'times':1}})
+			for time in users.find({'id':609565291}):
+				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет тянку' + ' ' +str(time['times']) + ' ' + 'раз', parse_mode='markdown')
+
 @db.message_handler(content_types=['text'])
-async def handle_vlastilinus(message):
-	if message.text.lower=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
+async def handle_text(message):
+	if message.text=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
 		if message.chat.type!='private':
 			if message.reply_to_message!=None:
 				if message.from_user.id!=message.reply_to_message.from_user.id:
@@ -526,6 +539,8 @@ async def handle_vlastilinus(message):
 					if user_2.status not in ['administrator', 'creator']:
 						await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
 					await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.', reply_to_message_id=message.message_id, parse_mode='markdown' )
+
+
 
 if __name__ == '__main__':
     executor.start_polling(db, skip_updates=True)
