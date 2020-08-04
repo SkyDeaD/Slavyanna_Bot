@@ -54,10 +54,6 @@ async def help_handler(message):
 
 *😀Unmute* - размучевает выбранного пользователя.
 
-*😵Ban* - кидает в бан выбранного пользователя.
-
-*😠Aban* - попытка забанить администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
-
 *😃Unban* - разбанивает выбранного пользователя.
 
 *🤕Kick* - выгоняет выбранного пользователя.
@@ -75,6 +71,8 @@ async def help_handler(message):
 *⏫Promote* - повышает выбранного пользователя до администратора; доступно только владельцу чата.
 
 *⏬Demote* - понижает выбранного администратора; доступно только владельцу чата.
+
+Так же существуют команды, которые отстуствуют в списке.
 
 
 Для полноценный работы в группе мне требуются следующие разрешения:
@@ -102,10 +100,6 @@ async def help_handler(message):
 
 *😀Unmute* - размучевает выбранного пользователя.
 
-*😵Ban* - кидает в бан выбранного пользователя.
-
-*😠Aban* - попытка забанить администратора. Доступна только владельцу группы. Администратор должен быть назначен через бота.
-
 *😃Unban* - разбанивает выбранного пользователя.
 
 *🤕Kick* - выгоняет выбранного пользователя.
@@ -123,6 +117,8 @@ async def help_handler(message):
 *⏫Promote* - повышает выбранного пользователя до администратора; доступно только владельцу чата.
 
 *⏬Demote* - понижает выбранного администратора; доступно только владельцу чата.
+
+Так же существуют команды, которые отстуствуют в списке.
 ''', parse_mode = 'markdown')
 		time.sleep(60)
 		await bot.delete_message(message.chat.id, help_msg.message_id)
@@ -302,51 +298,6 @@ async def handle_akick(message):
 						await bot.unban_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 					except:
 						await bot.send_message(message.chat.id, 'Я не могу кикнуть данного пользователя', reply_to_message_id=message.message_id)
-				else:
-					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id=message.message_id)
-			else:
-				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
-		else:
-			await bot.send_message(message.chat.id, 'У вас нет прав на выполнение данной комманды!', reply_to_message_id=message.message_id)
-
-@db.message_handler(commands=['ban'])
-async def handle_ban(message):
-	if message.chat.type!='private':
-		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-		if usera.status in ['administrator', 'creator']:
-			prom = await bot.get_chat_member(message.chat.id, 1303468919)
-			if prom.can_restrict_members==True:
-				if message.reply_to_message!=None:
-					user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-					if user.status not in ['administrator', 'creator']:	
-						sti = open('ban.webp', 'rb')
-						await bot.kick_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-						await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) решил(а) отойти, долгосрочно...🙂', reply_to_message_id = message.message_id, parse_mode = 'markdown')
-						await bot.send_sticker(message.chat.id, sti )
-					else:
-						await bot.send_message(message.chat.id, ' Я не могу забанить администратора... ', reply_to_message_id = message.message_id)
-				else:
-					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id = message.message_id)			
-			else:
-				await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников', reply_to_message_id = message.message_id)
-		else:
-			await bot.delete_message(message.chat.id, message.message_id)
-
-@db.message_handler(commands=['aban'])
-async def handle_aban(message):
-	if message.chat.type!='private':
-		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-		if usera.status in ['creator']:
-			prom = await bot.get_chat_member(message.chat.id, 1303468919)
-			if prom.can_restrict_members==True:
-				if message.reply_to_message!=None:
-					try:
-						sti = open('ban.webp', 'rb')
-						await bot.kick_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-						await bot.send_message(message.chat.id, F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) решил(а) отойти, долгосрочно...🙂', reply_to_message_id = message.message_id, parse_mode = 'markdown')
-						await bot.send_sticker(message.chat.id, sti )
-					except:
-						await bot.send_message(message.chat.id, 'Я не могу забанить данного пользователя', reply_to_message_id=message.message_id)
 				else:
 					await bot.send_message(message.chat.id,' Я не понимаю, о ком идёт речь? ', reply_to_message_id=message.message_id)
 			else:
