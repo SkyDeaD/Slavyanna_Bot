@@ -524,11 +524,11 @@ async def tyanka(message):
 		else:
 			users.update_one({'id':609565291}, {'$inc':{'times':1}})
 			for time in users.find({'id':609565291}):
-				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет тянку' + ' ' +str(time['times']) + ' ' + 'раз', parse_mode='markdown')
+				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет тянку' + ' ' +str(time['times']) + ' ' + 'раз.', parse_mode='markdown')
 
 @db.message_handler(content_types=['text'])
 async def handle_text(message):
-	if message.text=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
+	if message.text.lower=='властилинус пенитратус':
 		if message.chat.type!='private':
 			if message.reply_to_message!=None:
 				if message.from_user.id!=message.reply_to_message.from_user.id:
