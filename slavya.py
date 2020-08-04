@@ -5,6 +5,7 @@ import pymongo
 import os
 
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.utils import executor
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from pymongo import MongoClient
 
@@ -17,6 +18,11 @@ dbm = client.sl
 users=dbm.users
 
 tyan=['xочу тяночку', 'xочю тяночку', 'хочу тянку', 'хочю тянку', 'тяночку хочу', 'тяночку хочю', 'тянку хочу', 'тянку хочю']
+
+banuser = 0
+admuser = 0
+userstatus = 0
+useradm = 0
 
 @db.message_handler(commands=['start'])
 async def start_handler(message):
@@ -503,14 +509,6 @@ async def handle_admins(message):
 				text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
 		await bot.send_message(message.chat.id, text)
 
-@db.message_handler(commands=['send'])
-async def handle_send(message):
-	if message.chat.type=='private':
-		if message.from_user.id==577096232:
-			if message.reply_to_message!= None:
-				send = message.reply_to_message.text
-				await bot.send_message(-1001183567504, send)
-
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
 	if message.chat.type!='private':
@@ -567,6 +565,39 @@ async def ceb(message):
 		elif i == 13:
 			await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBdF8pk2LfksUnlGaRDQm8BI7dQ1HlAALmCAACsFRRSVn1VSF6uR-XGgQ')
 
+@db.callback_query_handler(text='1')
+async def button_reaction(call: types.CallbackQuery):
+	global banuser
+	global admuser
+	global useradm
+	global userstatus
+	if call.message:
+		if call.data=='1':
+			if call.from_user.id == admuser and userstatus.status in ['creator']:
+				try:
+					await bot.kick_chat_member(chat_id=call.message.chat.id, user_id=banuser) 
+					await call.message.edit_caption(F'*——Суд Властелинов казнил* [неверного](tg://user?id={banuser})!——', parse_mode='markdown')
+					await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgQAAxkBAAIBel8pztumhQxhwkZ8QQ29C_3ltR2-AAJ8AgAC2MRNUZCDixLVkQwVGgQ', reply_to_message_id=call.message.message_id)
+				except:
+					await call.message.edit_caption('*———Ошибка!———*', parse_mode='markdown')
+			elif call.from_user.id == admuser and userstatus.status in ['administrator']:
+				if useradm.status not in ['administrator', 'creator']:
+					await bot.kick_chat_member(chat_id=call.message.chat.id, user_id=banuser) 
+					await call.message.edit_caption(F'*——Суд Властелинов казнил* [неверного](tg://user?id={banuser})!——', parse_mode='markdown')
+					await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgQAAxkBAAIBel8pztumhQxhwkZ8QQ29C_3ltR2-AAJ8AgAC2MRNUZCDixLVkQwVGgQ', reply_to_message_id=call.message.message_id)
+				else:
+					await call.message.edit_caption('*———Ошибка!———*', parse_mode='markdown')
+
+@db.callback_query_handler(text='2')
+async def button_reaction(call: types.CallbackQuery):
+	global banuser
+	global admuser
+	if call.message:
+		if call.data=='2':
+			if call.from_user.id == admuser:
+				await call.message.edit_caption('\*\*\*'+'*Властелины милосердно простили*'+' '+F'[Анонима](tg://user?id={banuser})'+'*; ступай с миром.*'+'\*\*\*', parse_mode='markdown')
+				await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgIAAxkBAAIBe18p1NYZODgJhLLQq28aHskjKP9cAALpAwACgyVYS3rEbZUfdbcKGgQ', reply_to_message_id=call.message.message_id)
+
 @db.message_handler(content_types=['text'])
 async def handle_text(message):
 	if message.text.lower()=='властилинус пенитратус':
@@ -580,6 +611,29 @@ async def handle_text(message):
 					if user_2.status not in ['administrator', 'creator']:
 						await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
 					await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.', reply_to_message_id=message.message_id, parse_mode='markdown' )
+	
+	elif message.text.lower()=='властилинатус':
+		prom = await bot.get_chat_member(message.chat.id, 1303468919)
+		if prom.can_restrict_members==True:
+			if message.reply_to_message!=None:
+				if message.chat.type!='private':
+					usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+					if usera.status in ['administrator', 'creator']:
+						global banuser
+						banuser = message.reply_to_message.from_user.id
+						global admuser
+						admuser = message.from_user.id
+						global userstatus
+						userstatus = await bot.get_chat_member(message.chat.id, message.from_user.id)
+						global useradm
+						useradm = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+						keyboard = types.InlineKeyboardMarkup(row_width = 1)
+						item1 = types.InlineKeyboardButton(text='БанХаммером в лицо', callback_data='1')
+						item2 = types.InlineKeyboardButton(text='Пощадить Анона', callback_data='2')
+						keyboard.add(item1, item2)
+						await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBeV8puKv2I-flODKea1u-40ECk89sAAL4rjEbsFRRSVEBLpMMCS_oGuc-li4AAwEAAwIAA3kAAwQ8AAIaBA', F'Решается судьба [Анонима](tg://user?id={message.reply_to_message.from_user.id}), Властелины, готовьтесь!', reply_to_message_id=message.message_id, reply_markup=keyboard, parse_mode='markdown')
+		else:
+			await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n⭐️Добавление администраторов', reply_to_message_id = message.message_id)
 
 if __name__ == '__main__':
     executor.start_polling(db, skip_updates=True)
