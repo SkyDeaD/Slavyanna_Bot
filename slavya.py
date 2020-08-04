@@ -524,7 +524,7 @@ async def tyanka(message):
 		else:
 			users.update_one({'id':609565291}, {'$inc':{'times':1}})
 			for time in users.find({'id':609565291}):
-				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет Цербера' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id parse_mode='markdown')
+				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет Цербера' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='хочу')
 async def hotet(message):
