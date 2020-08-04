@@ -1,14 +1,19 @@
 import logging
 import time
+import pymongo
 import os
 
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-
-logging.basicConfig(level=logging.INFO)
+from pymongo import MongoClient
 
 bot = Bot('1303468919:AAGa9vt8IXsEf1M9SOAUjeN1qwrjv6FEYE0')
 db = Dispatcher(bot)
+
+logging.basicConfig(level=logging.INFO)
+client = pymongo.MongoClient('mongodb+srv://SkyDeaD:<GamerVD76>@aliceskybotandother-ik6lu.mongodb.net/<sl>?retryWrites=true&w=majority')
+dbs = client.sl
+users=dbs.users
 
 @db.message_handler(commands=['start'])
 async def start_handler(message):
@@ -510,7 +515,7 @@ async def full_ban(message):
 
 @db.message_handler(content_types=['text'])
 async def handle_vlastilinus(message):
-	if message.text=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
+	if message.text.lower=='ВЛАСТИЛИНУС ПЕНИТРАТУС':
 		if message.chat.type!='private':
 			if message.reply_to_message!=None:
 				if message.from_user.id!=message.reply_to_message.from_user.id:
