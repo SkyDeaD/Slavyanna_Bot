@@ -526,35 +526,13 @@ async def tyanka(message):
 			users.update_one({'id':609565291}, {'$inc':{'times':1}})
 			for time in users.find({'id':609565291}):
 				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет *Цербера*' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
-				i = random.randint(1,13)
+				i = random.randint(1,2)
 				if i == 1:
 					sti = open('ceb1.webp', 'rb')
 					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
 				elif i == 2:
 					sti = open('ceb2.webp', 'rb')
 					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-				elif i == 3:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBZl8pkhjnzqNrpiycmjJAJY7pxKRRAAJOrzEbapdJSR6QRYjqqV4kDjnxkS4AAwEAAwIAA3kAAwRABQABGgQ')
-				elif i == 4:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBZ18pkhizx-CTMpjgNnsTo3WNU_xjAAJPrzEbapdJSbP3_6Hp7x0sk5h9ki4AAwEAAwIAA3gAA36zBAABGgQ')
-				elif i == 5:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBaF8pkhgup_ujBOGCWOPCkPr2LjOaAAJQrzEbapdJSazaeaQlfCJCwCnukS4AAwEAAwIAA3gAA-kzBQABGgQ')
-				elif i == 6:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBaV8pkhiq_ClL5LcJgCnFpZshnQs1AAJRrzEbapdJSQPcDlLTooC1E7C9ki4AAwEAAwIAA3gAA7NNBQABGgQ')
-				elif i == 7:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBal8pkhi8-3eJD_VgEMBhvLrxWN7CAAJSrzEbapdJSQvLQjFsTWrj2hoIki4AAwEAAwIAA3kAA26xBAABGgQ')
-				elif i == 8:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBa18pkhh4hk1eHRXZIVW1Wez9u387AAJVrzEbapdJSTArZsXxWdFMnwxxkS4AAwEAAwIAA3gAAy6QBgABGgQ')
-				elif i == 9:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBbF8pkhgCBcoVRvRVaCJLrs9kKP4_AAJTrzEbapdJSZfdtQ608KTnQQTlkS4AAwEAAwIAA3gAAxk4BQABGgQ')
-				elif i == 10:
-					await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBbV8pkhj7hl2MPtU7Ga1-xlQPVBBTAAJUrzEbapdJSYZEaCNuW7r9i654kS4AAwEAAwIAA3kAA8aJBgABGgQ')
-				elif i == 11:
-					await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBcl8pk2K982iU0mE4q7N5O0hmkY-JAALgCAACsFRRSU8Vp5NZzmoCGgQ')
-				elif i == 12:
-					await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBc18pk2IBG0-KHUB1c9A-brEvFu1yAAJsCQACHW7oSioyPE3z4hqgGgQ')
-				elif i == 13:
-					await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBdF8pk2LfksUnlGaRDQm8BI7dQ1HlAALmCAACsFRRSVn1VSF6uR-XGgQ')
 
 @db.message_handler(regexp='цербер')
 async def ceb(message):
