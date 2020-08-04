@@ -533,10 +533,10 @@ async def tyanka(message):
 async def ceb(message):
 	if message.chat.type!='private':
 		i = random.randint(1,2)
-		if i = 1:
+		if i == 1:
 			sti = open('ceb1.webp', 'rb')
 			await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-		elif i = 2:
+		elif i == 2:
 			sti = open('ceb2.webp', 'rb')
 			await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
 
