@@ -520,7 +520,7 @@ async def pox(message):
 		n = message.from_user.first_name
 		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
 		z = message.from_user.last_name
-		if z != none:
+		if z != None:
 			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
 		x = users.find_one({'id':message.from_user.id})
 		if x == None:
