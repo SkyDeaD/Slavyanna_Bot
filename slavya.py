@@ -513,6 +513,21 @@ async def pox(message):
 			for time in users.find({'id':839954020}):
 				await bot.send_message(message.chat.id, F'*{n} {z}* хочет 02 уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
+@db.message_handler(regexp='хочу пиццу')
+async def pox(message):
+	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==541023518:
+		n = message.from_user.first_name
+		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+		z = message.from_user.last_name
+		z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+		x = users.find_one({'id':message.from_user.id})
+		if x == None:
+			users.insert_one({'id':541023518, 'times':0})
+		else:
+			users.update_one({'id':541023518}, {'$inc':{'times':1}})
+			for time in users.find({'id':541023518}):
+				await bot.send_message(message.chat.id, F'*{n} {z}* хочет пиццу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+
 @db.message_handler(regexp='цербер')
 async def ceb(message):
 	if message.chat.type!='private':
