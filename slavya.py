@@ -466,7 +466,7 @@ async def full_ban(message):
 		await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
 
 @db.message_handler(regexp='цербера хочу')
-async def tyanka(message):
+async def ceph(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==609565291:
 		x = users.find_one({'id':message.from_user.id})
 		if x == None:
@@ -482,6 +482,17 @@ async def tyanka(message):
 				elif i == 2:
 					sti = open('ceb2.webp', 'rb')
 					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
+
+@db.message_handler(regexp='похуй')
+async def pox(message):
+	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==577096232:
+		x = users.find_one({'id':message.from_user.id})
+		if x == None:
+			users.insert_one({'id':577096232, 'times':0})
+		else:
+			users.update_one({'id':577096232}, {'$inc':{'times':1}})
+			for time in users.find({'id':577096232}):
+				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}\'у* похуй уже в*' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='цербер')
 async def ceb(message):
