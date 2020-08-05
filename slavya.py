@@ -506,13 +506,21 @@ async def pox(message):
 		z = message.from_user.last_name
 		if z !=None:
 			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-		x = users.find_one({'id':message.from_user.id})
-		if x == None:
-			users.insert_one({'id':839954020, 'times':0})
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':839954020, 'times':0})
+			else:
+				users.update_one({'id':839954020}, {'$inc':{'times':1}})
+				for time in users.find({'id':839954020}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* хочет 02 уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 		else:
-			users.update_one({'id':839954020}, {'$inc':{'times':1}})
-			for time in users.find({'id':839954020}):
-				await bot.send_message(message.chat.id, F'*{n} {z}* хочет 02 уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':839954020, 'times':0})
+			else:
+				users.update_one({'id':839954020}, {'$inc':{'times':1}})
+				for time in users.find({'id':839954020}):
+					await bot.send_message(message.chat.id, F'*{n}* хочет 02 уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='хочу пиццу')
 async def pox(message):
@@ -522,13 +530,21 @@ async def pox(message):
 		z = message.from_user.last_name
 		if z != None:
 			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-		x = users.find_one({'id':message.from_user.id})
-		if x == None:
-			users.insert_one({'id':541023518, 'times':0})
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':541023518, 'times':0})
+			else:
+				users.update_one({'id':541023518}, {'$inc':{'times':1}})
+				for time in users.find({'id':541023518}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* хочет пиццу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 		else:
-			users.update_one({'id':541023518}, {'$inc':{'times':1}})
-			for time in users.find({'id':541023518}):
-				await bot.send_message(message.chat.id, F'*{n} {z}* хочет пиццу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':541023518, 'times':0})
+			else:
+				users.update_one({'id':541023518}, {'$inc':{'times':1}})
+				for time in users.find({'id':541023518}):
+					await bot.send_message(message.chat.id, F'*{n}* хочет пиццу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='цербер')
 async def ceb(message):
