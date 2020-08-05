@@ -468,13 +468,15 @@ async def full_ban(message):
 @db.message_handler(regexp='цербера хочу')
 async def ceph(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==609565291:
+		n = message.from_user.first_name
+		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
 		x = users.find_one({'id':message.from_user.id})
 		if x == None:
 			users.insert_one({'id':609565291, 'times':0})
 		else:
 			users.update_one({'id':609565291}, {'$inc':{'times':1}})
 			for time in users.find({'id':609565291}):
-				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}* заебал, хочет *Цербера*' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+				await bot.send_message(message.chat.id, F'*{n}* заебал, хочет *Цербера*' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 				i = random.randint(1,2)
 				if i == 1:
 					sti = open('ceb1.webp', 'rb')
@@ -486,13 +488,15 @@ async def ceph(message):
 @db.message_handler(regexp='похуй')
 async def pox(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==577096232:
+		n = message.from_user.first_name
+		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
 		x = users.find_one({'id':message.from_user.id})
 		if x == None:
 			users.insert_one({'id':577096232, 'times':0})
 		else:
 			users.update_one({'id':577096232}, {'$inc':{'times':1}})
 			for time in users.find({'id':577096232}):
-				await bot.send_message(message.chat.id, F'*{message.from_user.first_name}\'у* похуй уже в*' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+				await bot.send_message(message.chat.id, F'*{n}* похуй уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='цербер')
 async def ceb(message):
