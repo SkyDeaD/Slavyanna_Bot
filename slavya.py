@@ -418,15 +418,15 @@ async def handle_rulses(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
-			x = users.find_one({'rules':{'$exists':True}})
+			x = users.find_one({'rules':{'$exists':True}, 'chatid':message.chat.id})
 			if x == None:
 				rules = message.reply_to_message.text
-				users.insert_one({'rules':rules})
+				users.insert_one({'rules':rules, 'chatid':message.chat.id})
 				await bot.send_message(message.chat.id, F'Правила чата [{message.chat.title}](https://t.me/{message.chat.username}) установлены.', reply_to_message_id=message.message_id, parse_mode='markdown')
 			elif x != None:
 				rules = message.reply_to_message.text
-				users.delete_one({'rules':{'$exists':True}})
-				users.insert_one({'rules':rules})
+				users.delete_one({'rules':{'$exists':True}, 'chatid':message.chat.id})
+				users.insert_one({'rules':rules, 'chatid':message.chat.id})
 				await bot.send_message(message.chat.id, F'Правила чата [{message.chat.title}](https://t.me/{message.chat.username}) обновлены.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(commands=['delrules'])
@@ -434,17 +434,17 @@ async def handle_rulses(message):
 	if message.chat.type!='private':
 		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 		if usera.status in ['administrator', 'creator']:
-			users.delete_one({'rules':{'$exists':True}})
+			users.delete_one({'rules':{'$exists':True}, 'chatid':message.chat.id})
 			await bot.send_message(message.chat.id, F'Правила чата [{message.chat.title}](https://t.me/{message.chat.username}) удалены.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(commands=['rules'])
 async def handle_rulses(message):
 	if message.chat.type!='private':
-		x = users.find_one({'rules':{'$exists':True}})
+		x = users.find_one({'rules':{'$exists':True}, 'chatid':message.chat.id})
 		if x == None:
 			await bot.send_message(message.chat.id, F'В данном чате пока что нет правил.', reply_to_message_id=message.message_id, parse_mode='markdown')
 		else:
-			for rul in users.find({'rules':{'$exists':True}}):
+			for rul in users.find({'chatid':message.chat.id}):
 				await bot.send_message(message.chat.id, rul['rules'], reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(commands=["report"])
@@ -516,33 +516,48 @@ async def ceph(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==609565291:
 		n = message.from_user.first_name
 		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-		x = users.find_one({'id':message.from_user.id})
-		if x == None:
-			users.insert_one({'id':609565291, 'times':0})
+		z = message.from_user.last_name
+		if z !=None:
+			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':609565291, 'times':0})
+			else:
+				users.update_one({'id':609565291}, {'$inc':{'times':1}})
+				for time in users.find({'id':609565291}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* заебал, хочет Цербера уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 		else:
-			users.update_one({'id':609565291}, {'$inc':{'times':1}})
-			for time in users.find({'id':609565291}):
-				await bot.send_message(message.chat.id, F'*{n}* заебал, хочет *Цербера*' + ' ' +str(time['times']) + ' ' + 'раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
-				i = random.randint(1,2)
-				if i == 1:
-					sti = open('ceb1.webp', 'rb')
-					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-				elif i == 2:
-					sti = open('ceb2.webp', 'rb')
-					await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':609565291, 'times':0})
+			else:
+				users.update_one({'id':609565291}, {'$inc':{'times':1}})
+				for time in users.find({'id':609565291}):
+					await bot.send_message(message.chat.id, F'*{n}* заебал, хочет Цербера уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='похуй')
 async def pox(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==577096232:
 		n = message.from_user.first_name
 		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-		x = users.find_one({'id':message.from_user.id})
-		if x == None:
-			users.insert_one({'id':577096232, 'times':0})
+		z = message.from_user.last_name
+		if z !=None:
+			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':577096232, 'times':0})
+			else:
+				users.update_one({'id':577096232}, {'$inc':{'times':1}})
+				for time in users.find({'id':577096232}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* похуй уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 		else:
-			users.update_one({'id':577096232}, {'$inc':{'times':1}})
-			for time in users.find({'id':577096232}):
-				await bot.send_message(message.chat.id, F'*{n}* похуй уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':577096232, 'times':0})
+			else:
+				users.update_one({'id':577096232}, {'$inc':{'times':1}})
+				for time in users.find({'id':577096232}):
+					await bot.send_message(message.chat.id, F'*{n}* похуй уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='хочу 02')
 async def pox(message):
@@ -591,6 +606,30 @@ async def pox(message):
 				users.update_one({'id':541023518}, {'$inc':{'times':1}})
 				for time in users.find({'id':541023518}):
 					await bot.send_message(message.chat.id, F'*{n}* хочет пиццу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+
+@db.message_handler(regexp='слава ситису')
+async def pox(message):
+	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==717015019:
+		n = message.from_user.first_name
+		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+		z = message.from_user.last_name
+		if z != None:
+			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':717015019, 'times':0})
+			else:
+				users.update_one({'id':717015019}, {'$inc':{'times':1}})
+				for time in users.find({'id':717015019}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* восхваляет Ситиса уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+		else:
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':717015019, 'times':0})
+			else:
+				users.update_one({'id':717015019}, {'$inc':{'times':1}})
+				for time in users.find({'id':717015019}):
+					await bot.send_message(message.chat.id, F'*{n}* восхваляет Ситиса уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='цербер')
 async def ceb(message):
