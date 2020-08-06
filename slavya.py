@@ -526,14 +526,6 @@ async def handle_save(message):
 		else:
 			await bot.send_message(message.chat.id, 'Нужно выбрать фотографию или gif-анимацию.', reply_to_message_id=message.message_id)
 
-@db.message_handler(commands=['deleteall'])
-async def handle_deleteall(message):
-	if message.from_user.id in [577096232, 609565291]:
-		users.delete_many({'type_cer':{'$ne':0}})
-		users.delete_many({'type_cer':{'$ne':0}})
-		users.delete_many({'doc_id':{'$ne':0}})
-		await message.reply('Все сохранённые артф и gif\'ки по тэгу Цербер удалены.')
-
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
 	if message.chat.type!='private':
