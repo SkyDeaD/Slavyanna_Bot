@@ -526,6 +526,17 @@ async def handle_save(message):
 		else:
 			await bot.send_message(message.chat.id, 'Нужно выбрать фотографию или gif-анимацию.', reply_to_message_id=message.message_id)
 
+@db.message_handler(commands=['count'])
+async def handle_count(message):
+	if message.from_user.id in [577096232, 609565291]:
+		a = []
+		b = []
+		for i in users.find({'type_cer':'photo'}):
+			a.append(i['doc_id'])
+		for g in users.find({'type_cer':'anim'}):
+			b.append(g['doc_id'])
+		await bot.send_message(message.chat.id, F'На данный момент в базе данных хранится:\n\n' + str((len(a))) + ' ' + 'картинок\n'+ str((len(b))) + ' ' + 'gif-анимаций\n')
+
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
 	if message.chat.type!='private':
@@ -714,7 +725,7 @@ async def handle_cerber(message):
 			a.append(i['doc_id'])
 		print(a)
 		p_id = random.choice(a)
-		await bot.send_photo(message.chat.id, p_id)
+		await bot.send_animation(message.chat.id, p_id)
 
 @db.callback_query_handler(text='1')
 async def button_reaction(call: types.CallbackQuery):
