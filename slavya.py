@@ -17,8 +17,6 @@ client = pymongo.MongoClient('mongodb+srv://SkyDeaD:GamerVD76@aliceskybotandothe
 dbm = client.sl
 users=dbm.users
 
-tyan=['xочу тяночку', 'xочю тяночку', 'хочу тянку', 'хочю тянку', 'тяночку хочу', 'тяночку хочю', 'тянку хочу', 'тянку хочю']
-
 banuser = 0
 admuser = 0
 userstatus = 0
@@ -506,6 +504,53 @@ async def handle_admins(message):
 				text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
 		await bot.send_message(message.chat.id, text)
 
+@db.message_handler(commands=['save'])
+async def handle_save(message):
+	if message.from_user.id in [577096232, 609565291]:
+		if not message.reply_to_message:
+			return
+		if message.reply_to_message.content_type == "photo":
+			x = users.find_one({'type_cer':'photo', 'doc_id':message.reply_to_message.photo[-1].file_id})
+			if x == None:
+				users.insert_one({'type_cer':'photo', 'doc_id':message.reply_to_message.photo[-1].file_id})
+				await bot.send_message(message.chat.id, 'Файл сохранён!', reply_to_message_id=message.message_id)
+			else:
+				await bot.send_message(message.chat.id, 'Данный файл уже сохранён!', reply_to_message_id=message.message_id)
+		elif message.reply_to_message.content_type == "animation":
+			x = users.find_one({'type_cer':'anim', 'doc_id':message.reply_to_message.animation.file_id})
+			if x == None:
+				users.insert_one({'type_cer':'anim', 'doc_id':message.reply_to_message.animation.file_id})
+				await bot.send_message(message.chat.id, 'Файл сохранён!', reply_to_message_id=message.message_id)
+			else:
+				await bot.send_message(message.chat.id, 'Данный файл уже сохранён!', reply_to_message_id=message.message_id)
+		else:
+			await bot.send_message(message.chat.id, 'Нужно выбрать фотографию или gif-анимацию.', reply_to_message_id=message.message_id)
+
+@db.message_handler(commands=['deleteall'])
+async def handle_deleteall(message):
+	if message.from_user.id in [577096232, 609565291]:
+		users.delete_many({'type_cer':{'$ne':0}})
+		users.delete_many({'type_cer':{'$ne':0}})
+		users.delete_many({'doc_id':{'$ne':0}})
+		await message.reply('Все сохранённые артф и gif\'ки по тэгу Цербер удалены.')
+
+@db.message_handler(regexp='цербер')
+async def handle_cerber(message):
+	a=[]
+	ran = random.randint(1,2)
+	if ran == 1:
+		for i in users.find({'type_cer':'photo'}):
+			a.append(i['doc_id'])
+		print(a)
+		p_id = random.choice(a)
+		await bot.send_photo(message.chat.id, p_id)
+	else:
+		for i in users.find({'type_cer':'anim'}):
+			a.append(i['doc_id'])
+		print(a)
+		p_id = random.choice(a)
+		await bot.send_photo(message.chat.id, p_id)
+
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
 	if message.chat.type!='private':
@@ -583,6 +628,54 @@ async def pox(message):
 				for time in users.find({'id':839954020}):
 					await bot.send_message(message.chat.id, F'*{n}* хочет 02 уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
+@db.message_handler(regexp='хочу виолу')
+async def pox(message):
+	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==593146532:
+		n = message.from_user.first_name
+		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+		z = message.from_user.last_name
+		if z !=None:
+			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':593146532, 'times':0})
+			else:
+				users.update_one({'id':593146532}, {'$inc':{'times':1}})
+				for time in users.find({'id':593146532}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* хочет Виолу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+		else:
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':593146532, 'times':0})
+			else:
+				users.update_one({'id':593146532}, {'$inc':{'times':1}})
+				for time in users.find({'id':593146532}):
+					await bot.send_message(message.chat.id, F'*{n}* хочет Виолу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+
+@db.message_handler(regexp='слава виоле')
+async def pox(message):
+	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==593146532:
+		n = message.from_user.first_name
+		n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+		z = message.from_user.last_name
+		if z !=None:
+			z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':593146532, 'times':0})
+			else:
+				users.update_one({'id':593146532}, {'$inc':{'times':1}})
+				for time in users.find({'id':593146532}):
+					await bot.send_message(message.chat.id, F'*{n} {z}* восхваляет Виолу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+		else:
+			x = users.find_one({'id':message.from_user.id})
+			if x == None:
+				users.insert_one({'id':593146532, 'times':0})
+			else:
+				users.update_one({'id':593146532}, {'$inc':{'times':1}})
+				for time in users.find({'id':593146532}):
+					await bot.send_message(message.chat.id, F'*{n}* восхваляет Виолу уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
+
 @db.message_handler(regexp='хочу пиццу')
 async def pox(message):
 	if message.chat.id in [-1001216079799, -1001183567504] and message.from_user.id==541023518:
@@ -634,35 +727,7 @@ async def pox(message):
 @db.message_handler(regexp='цербер')
 async def ceb(message):
 	if message.chat.type!='private':
-		i = random.randint(1,13)
-		if i == 1:
-			sti = open('ceb1.webp', 'rb')
-			await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-		elif i == 2:
-			sti = open('ceb2.webp', 'rb')
-			await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-		elif i == 3:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBZl8pkhjnzqNrpiycmjJAJY7pxKRRAAJOrzEbapdJSR6QRYjqqV4kDjnxkS4AAwEAAwIAA3kAAwRABQABGgQ')
-		elif i == 4:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBZ18pkhizx-CTMpjgNnsTo3WNU_xjAAJPrzEbapdJSbP3_6Hp7x0sk5h9ki4AAwEAAwIAA3gAA36zBAABGgQ')
-		elif i == 5:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBaF8pkhgup_ujBOGCWOPCkPr2LjOaAAJQrzEbapdJSazaeaQlfCJCwCnukS4AAwEAAwIAA3gAA-kzBQABGgQ')
-		elif i == 6:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBaV8pkhiq_ClL5LcJgCnFpZshnQs1AAJRrzEbapdJSQPcDlLTooC1E7C9ki4AAwEAAwIAA3gAA7NNBQABGgQ')
-		elif i == 7:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBal8pkhi8-3eJD_VgEMBhvLrxWN7CAAJSrzEbapdJSQvLQjFsTWrj2hoIki4AAwEAAwIAA3kAA26xBAABGgQ')
-		elif i == 8:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBa18pkhh4hk1eHRXZIVW1Wez9u387AAJVrzEbapdJSTArZsXxWdFMnwxxkS4AAwEAAwIAA3gAAy6QBgABGgQ')
-		elif i == 9:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBbF8pkhgCBcoVRvRVaCJLrs9kKP4_AAJTrzEbapdJSZfdtQ608KTnQQTlkS4AAwEAAwIAA3gAAxk4BQABGgQ')
-		elif i == 10:
-			await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBbV8pkhj7hl2MPtU7Ga1-xlQPVBBTAAJUrzEbapdJSYZEaCNuW7r9i654kS4AAwEAAwIAA3kAA8aJBgABGgQ')
-		elif i == 11:
-			await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBcl8pk2K982iU0mE4q7N5O0hmkY-JAALgCAACsFRRSU8Vp5NZzmoCGgQ')
-		elif i == 12:
-			await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBc18pk2IBG0-KHUB1c9A-brEvFu1yAAJsCQACHW7oSioyPE3z4hqgGgQ')
-		elif i == 13:
-			await bot.send_animation(message.chat.id, 'CgACAgIAAxkBAAIBdF8pk2LfksUnlGaRDQm8BI7dQ1HlAALmCAACsFRRSVn1VSF6uR-XGgQ')
+		pass
 
 @db.callback_query_handler(text='1')
 async def button_reaction(call: types.CallbackQuery):
