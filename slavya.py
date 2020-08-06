@@ -534,23 +534,6 @@ async def handle_deleteall(message):
 		users.delete_many({'doc_id':{'$ne':0}})
 		await message.reply('Все сохранённые артф и gif\'ки по тэгу Цербер удалены.')
 
-@db.message_handler(regexp='цербер')
-async def handle_cerber(message):
-	a=[]
-	ran = random.randint(1,2)
-	if ran == 1:
-		for i in users.find({'type_cer':'photo'}):
-			a.append(i['doc_id'])
-		print(a)
-		p_id = random.choice(a)
-		await bot.send_photo(message.chat.id, p_id)
-	else:
-		for i in users.find({'type_cer':'anim'}):
-			a.append(i['doc_id'])
-		print(a)
-		p_id = random.choice(a)
-		await bot.send_photo(message.chat.id, p_id)
-
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
 	if message.chat.type!='private':
@@ -725,9 +708,21 @@ async def pox(message):
 					await bot.send_message(message.chat.id, F'*{n}* восхваляет Ситиса уже в*' + ' ' +str(time['times']) + ' ' + '*раз.', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(regexp='цербер')
-async def ceb(message):
-	if message.chat.type!='private':
-		pass
+async def handle_cerber(message):
+	a=[]
+	ran = random.randint(1,2)
+	if ran == 1:
+		for i in users.find({'type_cer':'photo'}):
+			a.append(i['doc_id'])
+		print(a)
+		p_id = random.choice(a)
+		await bot.send_photo(message.chat.id, p_id)
+	else:
+		for i in users.find({'type_cer':'anim'}):
+			a.append(i['doc_id'])
+		print(a)
+		p_id = random.choice(a)
+		await bot.send_photo(message.chat.id, p_id)
 
 @db.callback_query_handler(text='1')
 async def button_reaction(call: types.CallbackQuery):
