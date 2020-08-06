@@ -133,7 +133,7 @@ async def handler_new_member(message):
 			for user in message.new_chat_members:
 				sti = open('welcome.webp', 'rb')
 				await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
-				await bot.send_message(message.chat.id, F'Добро пожаловать, {user.first_name}!', reply_to_message_id=message.message_id)
+				await bot.send_message(message.chat.id, F'Добро пожаловать в чат [{message.chat.title}](https://t.me/{message.chat.username}), [{user.first_name}](tg://user?id={user.id})!\n\nПредлагаю ознакомиться с правилами:\n👉/rules👈', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(commands=['mute'])
 async def handle_mute(message):
@@ -400,6 +400,40 @@ async def handle_purge(message):
 					await bot.send_message(message.chat.id, 'Для выполнения данной команды требуются следующие права администратора:\n\n❌Удаление сообщений.', reply_to_message_id=message.message_id)
 		else:
 			await bot.delete_message(message.chat.id, message.message_id)
+
+@db.message_handler(commands=['setrules'])
+async def handle_rulses(message):
+	if message.chat.type!='private':
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
+			x = users.find_one({'rules':{'$exists':True}})
+			if x == None:
+				rules = message.reply_to_message.text
+				users.insert_one({'rules':rules})
+				await bot.send_message(message.chat.id, F'Правила чата [{message.chat.title}](https://t.me/{message.chat.username}) установлены.', reply_to_message_id=message.message_id, parse_mode='markdown')
+			elif x != None:
+				rules = message.reply_to_message.text
+				users.delete_one({'rules':{'$exists':True}})
+				users.insert_one({'rules':rules})
+				await bot.send_message(message.chat.id, F'Правила чата [{message.chat.title}](https://t.me/{message.chat.username}) обновлены.', reply_to_message_id=message.message_id, parse_mode='markdown')
+
+@db.message_handler(commands=['delrules'])
+async def handle_rulses(message):
+	if message.chat.type!='private':
+		usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
+		if usera.status in ['administrator', 'creator']:
+			users.delete_one({'rules':{'$exists':True}})
+			await bot.send_message(message.chat.id, F'Правила чата [{message.chat.title}](https://t.me/{message.chat.username}) удалены.', reply_to_message_id=message.message_id, parse_mode='markdown')
+
+@db.message_handler(commands=['rules'])
+async def handle_rulses(message):
+	if message.chat.type!='private':
+		x = users.find_one({'rules':{'$exists':True}})
+		if x == None:
+			await bot.send_message(message.chat.id, F'В данном чате пока что нет правил.', reply_to_message_id=message.message_id, parse_mode='markdown')
+		else:
+			for rul in users.find({'rules':{'$exists':True}}):
+				await bot.send_message(message.chat.id, rul['rules'], reply_to_message_id=message.message_id, parse_mode='markdown')
 
 @db.message_handler(commands=["report"])
 async def mandle_report(message):
