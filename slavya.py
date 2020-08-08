@@ -811,7 +811,7 @@ async def handle_cerber(message):
 		for i in users.find({'type_cer':'photo'}):
 			a.append(i['doc_id'])
 		p_id = random.choice(a)
-		await message.reply_animation(p_id)
+		await message.reply_photo(p_id)
 	else:
 		for i in users.find({'type_cer':'anim'}):
 			a.append(i['doc_id'])
