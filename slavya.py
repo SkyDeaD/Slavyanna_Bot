@@ -848,7 +848,7 @@ async def button_reaction(call: types.CallbackQuery):
 	global admuser
 	if call.message:
 		if call.from_user.id == admuser:
-			await call.message.edit_caption('\*\*\*'+'*Властелины милосердно простили*'+' '+F'[Анонима](tg://user?id={banuser})'+'*; ступай с миром.*'+'\*\*\*', parse_mode='markdown')
+			await call.message.edit_caption('\*\*\*'+'*Властелины милосердно простили*'+' '+F'[Анонима](tg://user?id={banuser})'+'*; ступай с миром.*'+'\*\*\*', reply_to_message_id=call.message.message_id, parse_mode='markdown')
 			await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgIAAxkBAAIBe18p1NYZODgJhLLQq28aHskjKP9cAALpAwACgyVYS3rEbZUfdbcKGgQ')
 
 @db.message_handler(content_types=['text'])
