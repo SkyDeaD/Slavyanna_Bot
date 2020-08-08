@@ -829,7 +829,7 @@ async def button_reaction(call: types.CallbackQuery):
 			try:
 				await bot.kick_chat_member(chat_id=call.message.chat.id, user_id=banuser) 
 				await call.message.edit_caption(F'*——Суд Властелинов казнил* [неверного](tg://user?id={banuser})!——', parse_mode='markdown')
-				await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgQAAxkBAAIBel8pztumhQxhwkZ8QQ29C_3ltR2-AAJ8AgAC2MRNUZCDixLVkQwVGgQ')
+				await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgQAAxkBAAIBel8pztumhQxhwkZ8QQ29C_3ltR2-AAJ8AgAC2MRNUZCDixLVkQwVGgQ', reply_to_message_id=call.message.message_id)
 			except:
 				await call.message.edit_caption('*———Ошибка!———*', parse_mode='markdown')
 		elif call.from_user.id == admuser and userstatus.status in ['administrator']:
@@ -838,7 +838,7 @@ async def button_reaction(call: types.CallbackQuery):
 			elif useradm.status != 'administrator':
 				await bot.kick_chat_member(chat_id=call.message.chat.id, user_id=banuser) 
 				await call.message.edit_caption(F'*——Суд Властелинов казнил* [неверного](tg://user?id={banuser})!——', parse_mode='markdown')
-				await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgQAAxkBAAIBel8pztumhQxhwkZ8QQ29C_3ltR2-AAJ8AgAC2MRNUZCDixLVkQwVGgQ')
+				await bot.send_animation(chat_id=call.message.chat.id, animation='CgACAgQAAxkBAAIBel8pztumhQxhwkZ8QQ29C_3ltR2-AAJ8AgAC2MRNUZCDixLVkQwVGgQ', reply_to_message_id=call.message.message_id)
 			else:
 				await call.message.edit_caption('*———Ошибка!———*', parse_mode='markdown')
 
