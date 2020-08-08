@@ -630,7 +630,7 @@ async def ceph(message):
 
 @db.message_handler(regexp='похуй')
 async def pox(message):
-	if message.chat.id not in [-1001216079799, -1001183567504] and message.from_user.id != 577096232:
+	if message.chat.id  not in [-1001216079799, -1001183567504] and message.from_user.id != 577096232:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -811,7 +811,7 @@ async def handle_cerber(message):
 		for i in users.find({'type_cer':'photo'}):
 			a.append(i['doc_id'])
 		p_id = random.choice(a)
-		await message.reply_photo(p_id)
+		await message.reply_animation(p_id)
 	else:
 		for i in users.find({'type_cer':'anim'}):
 			a.append(i['doc_id'])
