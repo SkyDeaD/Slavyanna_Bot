@@ -164,15 +164,15 @@ async def handle_mute(message):
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
 	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	if user.status in ['administrator', 'creator']:
 		await message.reply('Я не буду мутить администратора!')
 		return
 	u_mute = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 	if u_mute.can_send_messages is False:
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) и так молчит.', parse_mode='markdown')
-		return
-	if user.status != 'member':
-		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
 	await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) потерял голос.', parse_mode='markdown')					
@@ -194,12 +194,13 @@ async def handle_amute(message):
 	if message.reply_to_message is None:
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
+	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	u_mute = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 	if u_mute.can_send_messages is False:
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) и так молчит.', parse_mode='markdown')
-		return
-	if user.status != 'member':
-		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	try:
 		await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id, until_date = time.time())
@@ -229,15 +230,15 @@ async def handle_unmute(message):
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
 	user = await bot.get_chat_member( message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	if user.status in ['administrator', 'creator']:
 		await message.reply('Администратор не может быть в муте.')
 		return
 	u_unmute = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
 	if u_unmute.can_send_messages in [True,None]:
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не в муте.', parse_mode='markdown')
-		return
-	if user.status != 'member':
-		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	await bot.restrict_chat_member(message.chat.id,message.reply_to_message.from_user.id, can_send_messages=True, can_send_media_messages=True, can_send_other_messages=True, can_add_web_page_previews=True)						
 	await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) снова может говорить.', parse_mode='markdown')
@@ -260,11 +261,11 @@ async def handle_promote(message):
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
 	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	if user.status in ['administrator', 'creator']:
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) уже является администратором!', parse_mode='markdown')
-		return
-	if user.status != 'member':
-		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) повышен(а)!', parse_mode='markdown')
 	await bot.promote_chat_member(message.chat.id, message.reply_to_message.from_user.id, can_change_info=True, can_delete_messages=True, can_invite_users=True, can_restrict_members=True, can_pin_messages=True, can_promote_members=True)
@@ -285,11 +286,11 @@ async def handle_demote(message):
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
 	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	if user.status not in ['administrator', 'creator']:
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является администратором.', parse_mode='markdown')
-		return
-	if user.status != 'member':
-		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) понижен(а)!', parse_mode='markdown')
 	await bot.promote_chat_member(message.chat.id, message.reply_to_message.from_user.id, can_change_info=False, can_delete_messages=False, can_invite_users=False, can_restrict_members=False, can_pin_messages=False, can_promote_members=False)
@@ -313,12 +314,11 @@ async def handle_kick(message):
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
 	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	if user.status in ['administrator', 'creator']:
 		await message.reply('Я не могу кикнуть администратора.')
-		return
-	users = await bot.get_chat(message.chat.id)
-	if user.status != 'member':
-		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	await bot.kick_chat_member(message.chat.id, message.reply_to_message.from_user.id)						
 	await bot.unban_chat_member(message.chat.id, message.reply_to_message.from_user.id)
@@ -341,8 +341,8 @@ async def handle_akick(message):
 	if message.reply_to_message is None:
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
-	users = await bot.get_chat(message.chat.id)
-	if user.status != 'member':
+	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
 		return
 	try:
@@ -375,6 +375,9 @@ async def handle_unban(message):
 		await message.reply('Я не понимаю, о ком идёт речь?')
 		return
 	user = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+	if user.is_member is False:
+		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не является участником чата.', parse_mode='markdown')
+		return
 	if user.status != 'restricted':
 		await message.reply(F'[{message.reply_to_message.from_user.first_name}](tg://user?id={message.reply_to_message.from_user.id}) не забанен.', parse_mode='markdown')
 		return
@@ -585,17 +588,36 @@ async def handle_save(message):
 	else:
 		await message.reply('Нужно выбрать фотографию или gif-анимацию.')
 
+@db.message_handler(commands=['ksave'])
+async def handle_ksave(message):
+	if message.from_user.id not in [577096232, 609565291]:
+		return
+	if message.reply_to_message is None:
+		return
+	if message.reply_to_message.content_type == "audio":
+		x = users.find_one({'type_kino':'music', 'doc_id':message.reply_to_message.audio.file_id})
+		if x == None:
+			users.insert_one({'type_kino':'music', 'doc_id':message.reply_to_message.audio.file_id})
+			await message.reply('Файл сохранён!')
+		else:
+			await message.reply('Данный файл уже сохранён!')
+	else:
+		await message.reply('Нужно выбрать песню.')
+
 @db.message_handler(commands=['count'])
 async def handle_count(message):
 	if message.from_user.id not in [577096232, 609565291]:
 		return
 	a = []
 	b = []
+	c = []
 	for i in users.find({'type_cer':'photo'}):
 		a.append(i['doc_id'])
 	for g in users.find({'type_cer':'anim'}):
 		b.append(g['doc_id'])
-	await message.reply(F'На данный момент в базе данных хранится:\n\n' + str((len(a))) + ' ' + 'картинок\n'+ str((len(b))) + ' ' + 'gif-анимаций\n')
+	for h in users.find({'type_kino':'music'}):
+		c.append(h['doc_id'])
+	await message.reply(F'На данный момент в базе данных хранится:\n\n' + str((len(a))) + ' ' + 'картинок\n' + str((len(b))) + ' ' + 'gif-анимаций\n' + str((len(c))) + ' ' + 'Композиций группы \'Кино\'\n')
 
 @db.message_handler(regexp='фулл')
 async def full_ban(message):
@@ -605,7 +627,7 @@ async def full_ban(message):
 
 @db.message_handler(regexp='цербера хочу')
 async def ceph(message):
-	if message.chat.id not in [-1001216079799, -1001183567504] and message.from_user.id != 609565291:
+	if message.chat.id not in [-1001216079799, -1001183567504] or message.from_user.id != 609565291:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -630,7 +652,7 @@ async def ceph(message):
 
 @db.message_handler(regexp='похуй')
 async def pox(message):
-	if message.chat.id  not in [-1001216079799, -1001183567504] and message.from_user.id != 577096232:
+	if message.chat.id  not in [-1001216079799, -1001183567504] or message.from_user.id != 577096232:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -655,7 +677,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу 02')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 839954020:
+	if message.chat.id != -1001216079799 or message.from_user.id != 839954020:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -680,7 +702,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу виолу')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 593146532:
+	if message.chat.id != -1001216079799 or message.from_user.id != 593146532:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -705,7 +727,7 @@ async def pox(message):
 
 @db.message_handler(regexp='слава виоле')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 593146532:
+	if message.chat.id != -1001216079799 or message.from_user.id != 593146532:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -730,7 +752,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу пиццу')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 541023518:
+	if message.chat.id != -1001216079799 or message.from_user.id != 541023518:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -755,7 +777,7 @@ async def pox(message):
 
 @db.message_handler(regexp='слава ситису')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 717015019:
+	if message.chat.id != -1001216079799 or message.from_user.id != 717015019:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -780,7 +802,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хвала рандому')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 533271886:
+	if message.chat.id != -1001216079799 or message.from_user.id != 533271886:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -892,6 +914,33 @@ async def handle_text(message):
 		item2 = types.InlineKeyboardButton(text='Пощадить Анона', callback_data='2')
 		keyboard.add(item1, item2)
 		await bot.send_photo(message.chat.id, 'AgACAgIAAxkBAAIBeV8puKv2I-flODKea1u-40ECk89sAAL4rjEbsFRRSVEBLpMMCS_oGuc-li4AAwEAAwIAA3kAAwQ8AAIaBA', F'Решается судьба [Анонима](tg://user?id={message.reply_to_message.from_user.id}), Властелины, готовьтесь!', reply_to_message_id=message.message_id, reply_markup=keyboard, parse_mode='markdown')
+
+	elif message.text.lower() == 'цой жив':
+		a = []
+		if message.from_user.id not in [577096232, 609565291]:
+			return
+		for i in users.find({'type_kino':'music'}):
+			a.append(i['doc_id'])
+		p_id = random.choice(a)
+		await message.reply_audio(p_id)
+
+	elif message.text.lower() == 'все фото':
+		if message.chat.type != 'private':
+			return
+		if message.from_user.id not in [577096232, 609565291]:
+			return
+		for i in users.find({'type_cer':'photo'}):
+			await message.answer_photo(i['doc_id'])
+		for i in users.find({'type_cer':'anim'}):
+			await message.answer_animation(i['doc_id'])
+
+	elif message.text.lower() == 'вся музыка':
+		if message.chat.type != 'private':
+			return
+		if message.from_user.id not in [577096232, 609565291]:
+			return
+		for i in users.find({'type_kino':'music'}):
+			await message.answer_audio(i['doc_id'])
 
 if __name__ == '__main__':
     executor.start_polling(db, skip_updates=True)
