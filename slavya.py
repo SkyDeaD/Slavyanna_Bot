@@ -686,7 +686,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу 02')
 async def pox(message):
-	if message.chat.id != -1001216079799 or message.from_user.id != 839954020:
+	if message.chat.id != -1001216079799 and message.from_user.id != 839954020:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -711,7 +711,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу виолу')
 async def pox(message):
-	if message.chat.id != -1001216079799 or message.from_user.id != 593146532:
+	if message.chat.id != -1001216079799 and message.from_user.id != 593146532:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -736,7 +736,7 @@ async def pox(message):
 
 @db.message_handler(regexp='слава виоле')
 async def pox(message):
-	if message.chat.id != -1001216079799 or message.from_user.id != 593146532:
+	if message.chat.id != -1001216079799 and message.from_user.id != 593146532:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -761,7 +761,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу пиццу')
 async def pox(message):
-	if message.chat.id != -1001216079799 or message.from_user.id != 541023518:
+	if message.chat.id != -1001216079799 and message.from_user.id != 541023518:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -786,7 +786,7 @@ async def pox(message):
 
 @db.message_handler(regexp='слава ситису')
 async def pox(message):
-	if message.chat.id != -1001216079799 or message.from_user.id != 717015019:
+	if message.chat.id != -1001216079799 and message.from_user.id != 717015019:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -811,7 +811,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хвала рандому')
 async def pox(message):
-	if message.chat.id != -1001216079799 or message.from_user.id != 533271886:
+	if message.chat.id != -1001216079799 and message.from_user.id != 533271886:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
