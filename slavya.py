@@ -394,6 +394,9 @@ async def handle_pin(message):
 	if usera.status not in ['administrator', 'creator']:
 		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
 		return
+	if usera.can_pin_messages is False:
+		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
+		return
 	prom = await bot.get_chat_member(message.chat.id, 1303468919)
 	if prom.can_pin_messages is False:
 		await message.reply('Для выполнения данной команды требуются следующие права администратора:\n\n📌Закрепление сообщений.')
@@ -412,6 +415,9 @@ async def handle_unpin(message):
 	if usera.status not in ['administrator', 'creator']:
 		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
 		return
+	if usera.can_pin_messages is False:
+		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
+		return
 	prom = await bot.get_chat_member(message.chat.id, 1303468919 )
 	if prom.can_pin_messages is False:
 		await message.reply('Для выполнения данной команды требуются следующие права администратора:\n\n📌Закрепление сообщений.')
@@ -425,6 +431,9 @@ async def handle_del(message):
 		return
 	usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
 	if usera.status not in ['administrator', 'creator']:
+		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
+		return
+	if usera.can_delete_messages is False:
 		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
 		return
 	prom = await bot.get_chat_member(message.chat.id, 1303468919)
@@ -467,7 +476,7 @@ async def handle_rulses(message):
 	if message.chat.type == 'private':
 		return
 	usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-	if usera.status not in ['administrator', 'creator']:
+	if usera.status != 'creator':
 		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
 		return
 	x = users.find_one({'rules':{'$exists':True}, 'chatid':message.chat.id})
@@ -486,7 +495,7 @@ async def handle_rulses(message):
 	if message.chat.type == 'private':
 		return
 	usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
-	if usera.status not in ['administrator', 'creator']:
+	if usera.status != 'creator':
 		await message.reply('У Вас недостаточно прав для выполнения этой команды.')
 		return
 	users.delete_one({'rules':{'$exists':True}, 'chatid':message.chat.id})
@@ -677,7 +686,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу 02')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 839954020:
+	if message.chat.id != -1001216079799 or message.from_user.id != 839954020:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -702,7 +711,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу виолу')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 593146532:
+	if message.chat.id != -1001216079799 or message.from_user.id != 593146532:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -727,7 +736,7 @@ async def pox(message):
 
 @db.message_handler(regexp='слава виоле')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 593146532:
+	if message.chat.id != -1001216079799 or message.from_user.id != 593146532:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -752,7 +761,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хочу пиццу')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 541023518:
+	if message.chat.id != -1001216079799 or message.from_user.id != 541023518:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -777,7 +786,7 @@ async def pox(message):
 
 @db.message_handler(regexp='слава ситису')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 717015019:
+	if message.chat.id != -1001216079799 or message.from_user.id != 717015019:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -802,7 +811,7 @@ async def pox(message):
 
 @db.message_handler(regexp='хвала рандому')
 async def pox(message):
-	if message.chat.id != -1001216079799 and message.from_user.id != 533271886:
+	if message.chat.id != -1001216079799 or message.from_user.id != 533271886:
 		return
 	n = message.from_user.first_name
 	n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
