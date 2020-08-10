@@ -574,7 +574,8 @@ async def handle_report(message: types.Message):
     text = 'На данное сообщение поступила жалоба.\n\n'
     for i in adm:
         if i.user.is_bot is False:
-            text += f"\n@{i.user.username}"
+            if i.can_restrict_members is not False:
+                text += f"\n@{i.user.username}"
     await message.reply(text)
 
 
