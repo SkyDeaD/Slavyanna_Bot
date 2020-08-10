@@ -21,10 +21,9 @@ userstatus = 0
 useradm = 0
 
 
-@db.message_handler(commands=['start'])
+@db.message_handler(lambda message: message.chat.type == 'private', commands=['start'])
 async def start_handler(message):
-    if message.chat.type == 'private':
-        await message.reply(F'Привет, {message.from_user.first_name}!\nНажми 👉/help👈 ')
+    await message.reply(F'Привет, {message.from_user.first_name}!\nНажми 👉/help👈 ')
 
 
 @db.message_handler(commands=['help'])
@@ -150,10 +149,8 @@ async def handler_new_member(message):
                                        reply_to_message_id=message.message_id, parse_mode='markdown')
 
 
-@db.message_handler(commands=['mute'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['mute'])
 async def handle_mute(message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой комманды.')
@@ -191,10 +188,8 @@ async def handle_mute(message):
     await message.answer_sticker(sticker_mute)
 
 
-@db.message_handler(commands=['amute'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['amute'])
 async def handle_amute(message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой комманды.')
@@ -231,10 +226,8 @@ async def handle_amute(message):
         await message.answer_sticker(sticker_nonmute)
 
 
-@db.message_handler(commands=['unmute'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['unmute'])
 async def handle_unmute(message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         return
@@ -273,10 +266,8 @@ async def handle_unmute(message):
     await message.answer_sticker(sticker_unmute)
 
 
-@db.message_handler(commands=['promote'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['promote'])
 async def handle_promote(message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -308,10 +299,8 @@ async def handle_promote(message):
                                   can_pin_messages=True, can_promote_members=True)
 
 
-@db.message_handler(commands=['demote'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['demote'])
 async def handle_demote(message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -343,10 +332,8 @@ async def handle_demote(message):
                                   can_pin_messages=False, can_promote_members=False)
 
 
-@db.message_handler(commands=['kick'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['kick'])
 async def handle_kick(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -380,10 +367,8 @@ async def handle_kick(message: types.Message):
     await message.answer_sticker(sticker_kick)
 
 
-@db.message_handler(commands=['akick'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['akick'])
 async def handle_akick(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -416,10 +401,8 @@ async def handle_akick(message: types.Message):
         await message.answer_sticker(sticker_nonkick)
 
 
-@db.message_handler(commands=['unban'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['unban'])
 async def handle_unban(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -454,10 +437,8 @@ async def handle_unban(message: types.Message):
     await message.answer_sticker(sticker_unban)
 
 
-@db.message_handler(commands=['pin'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['pin'])
 async def handle_pin(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -477,10 +458,8 @@ async def handle_pin(message: types.Message):
     await message.delete()
 
 
-@db.message_handler(commands=['unpin'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['unpin'])
 async def handle_unpin(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -497,10 +476,8 @@ async def handle_unpin(message: types.Message):
     await message.delete()
 
 
-@db.message_handler(commands=['del'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['del'])
 async def handle_del(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -520,10 +497,8 @@ async def handle_del(message: types.Message):
     await bot.delete_message(message.chat.id, message.reply_to_message.message_id)
 
 
-@db.message_handler(commands=['purge'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['purge'])
 async def handle_purge(message: types.Message):
-    if message.chat.type == 'private':
-        return
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -547,10 +522,8 @@ async def handle_purge(message: types.Message):
     await message.answer('Чистка завершена.')
 
 
-@db.message_handler(commands=['setrules'])
-async def handle_rulses(message: types.Message):
-    if message.chat.type == 'private':
-        return
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['setrules'])
+async def handle_rules(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -569,10 +542,8 @@ async def handle_rulses(message: types.Message):
                             parse_mode='markdown')
 
 
-@db.message_handler(commands=['delrules'])
-async def handle_rulses(message: types.Message):
-    if message.chat.type == 'private':
-        return
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['delrules'])
+async def handle_rules(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -582,10 +553,8 @@ async def handle_rulses(message: types.Message):
                         parse_mode='markdown')
 
 
-@db.message_handler(commands=['rules'])
-async def handle_rulses(message: types.Message):
-    if message.chat.type == 'private':
-        return
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['rules'])
+async def handle_rules(message: types.Message):
     x = users.find_one({'rules': {'$exists': True}, 'chatid': message.chat.id})
     if x is None:
         await bot.send_message(message.chat.id, F'В данном чате пока что нет правил.',
@@ -596,10 +565,8 @@ async def handle_rulses(message: types.Message):
                                    parse_mode='markdown')
 
 
-@db.message_handler(commands=["report"])
-async def mandle_report(message: types.Message):
-    if message.chat.type == 'private':
-        return
+@db.message_handler(lambda message: message.chat.type != 'private', commands=["report"])
+async def handle_report(message: types.Message):
     if message.reply_to_message is None:
         await message.reply('Выберите сообщение, на которое хотите пожаловаться.')
         return
@@ -620,10 +587,8 @@ async def handle_message(message: types.Message):
 ''', reply_to_message_id=message.message_id, parse_mode='markdown')
 
 
-@db.message_handler(commands=['info'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['info'])
 async def handle_info(message: types.Message):
-    if message.chat.type == 'private':
-        return
     if message.reply_to_message is not None:
         adm = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
         group_id = await bot.get_chat(message.chat.id)
@@ -650,10 +615,8 @@ async def handle_info(message: types.Message):
 ''', parse_mode='markdown')
 
 
-@db.message_handler(commands=['admins'])
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['admins'])
 async def handle_admins(message: types.Message):
-    if message.chat.type == 'private':
-        return
     adm = await bot.get_chat_administrators(message.chat.id)
     text = 'Администраторы чата:\n'
     for i in adm:
@@ -742,20 +705,14 @@ async def handle_count(message: types.Message):
             len(c)) + ' ' + 'треков группы Кино.\n\nПо тэгу Моя милашка:\n' + str(len(d)) + ' ' + 'картинок.')
 
 
-@db.message_handler(regexp='фулл')
+@db.message_handler(lambda message: message.chat.type != 'private', regexp='фулл')
 async def full_ban(message: types.Message):
-    if message.chat.type == 'private':
-        return
     await message.reply_photo(
         'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
 
 
-@db.message_handler(regexp='цербера хочу')
+@db.message_handler(chat_id=[-1001216079799, -1001183567504], user_id=609565291, regexp='цербера хочу')
 async def ceph(message: types.Message):
-    if message.chat.id not in [-1001216079799, -1001183567504]:
-        return
-    if message.from_user.id != 609565291:
-        return
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -781,42 +738,8 @@ async def ceph(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(regexp='похуй')
-async def pox(message: types.Message):
-    if message.chat.id not in [-1001216079799, -1001183567504]:
-        return
-    if message.from_user.id != 577096232:
-        return
-    n = message.from_user.first_name
-    n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-    z = message.from_user.last_name
-    if z is not None:
-        z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-        x = users.find_one({'id': message.from_user.id})
-        if x is None:
-            users.insert_one({'id': 577096232, 'times': 0})
-        else:
-            users.update_one({'id': 577096232}, {'$inc': {'times': 1}})
-            for k in users.find({'id': 577096232}):
-                await message.reply(F'*{n} {z}* похуй уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
-                                    parse_mode='markdown')
-    else:
-        x = users.find_one({'id': message.from_user.id})
-        if x is None:
-            users.insert_one({'id': 577096232, 'times': 0})
-        else:
-            users.update_one({'id': 577096232}, {'$inc': {'times': 1}})
-            for k in users.find({'id': 577096232}):
-                await message.reply(F'*{n}* похуй уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
-                                    parse_mode='markdown')
-
-
-@db.message_handler(regexp='хочу 02')
+@db.message_handler(chat_id=-1001183567504, user_id=839954020, regexp='хочу 02')
 async def handle_02(message: types.Message):
-    if message.chat.id != -1001216079799:
-        return
-    if message.from_user.id != 839954020:
-        return
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -841,12 +764,8 @@ async def handle_02(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(regexp='хочу виолу')
-async def nadle_viola1(message: types.Message):
-    if message.chat.id != -1001216079799:
-        return
-    if message.from_user.id != 593146532:
-        return
+@db.message_handler(chat_id=-1001183567504, user_id=593146532, regexp='хочу виолу')
+async def handle_viola1(message: types.Message):
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -871,12 +790,8 @@ async def nadle_viola1(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(regexp='слава виоле')
+@db.message_handler(chat_id=-1001183567504, user_id=593146532, regexp='слава виоле')
 async def handle_viola2(message: types.Message):
-    if message.chat.id != -1001216079799:
-        return
-    if message.from_user.id != 593146532:
-        return
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -901,12 +816,8 @@ async def handle_viola2(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(regexp='хочу пиццу')
+@db.message_handler(chat_id=-1001183567504, user_id=541023518, regexp='хочу пиццу')
 async def handle_picca(message: types.Message):
-    if message.chat.id != -1001216079799:
-        return
-    if message.from_user.id != 541023518:
-        return
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -931,12 +842,8 @@ async def handle_picca(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(regexp='слава ситису')
+@db.message_handler(chat_id=-1001183567504, user_id=717015019, regexp='слава ситису')
 async def handle_sit(message: types.Message):
-    if message.chat.id != -1001216079799:
-        return
-    if message.from_user.id != 717015019:
-        return
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -961,12 +868,8 @@ async def handle_sit(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(regexp='хвала рандому')
+@db.message_handler(chat_id=-1001183567504, user_id=533271886, regexp='хвала рандому')
 async def handle_ran(message: types.Message):
-    if message.chat.id != -1001216079799:
-        return
-    if message.from_user.id != 533271886:
-        return
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
