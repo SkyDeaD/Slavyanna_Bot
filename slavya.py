@@ -740,7 +740,7 @@ async def ceph(message: types.Message):
 
 
 @db.message_handler(chat_id=-1001183567504, user_id=839954020, regexp='хочу 02')
-async def handle_02(message: types.Message):
+async def handle_02_1(message: types.Message):
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
     z = message.from_user.last_name
@@ -762,6 +762,32 @@ async def handle_02(message: types.Message):
             users.update_one({'id': 839954020}, {'$inc': {'times': 1}})
             for k in users.find({'id': 839954020}):
                 await message.reply(F'*{n}* хочет 02 уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
+                                    parse_mode='markdown')
+
+
+db.message_handler(chat_id=-1001183567504, user_id=839954020, regexp='слава 02')
+async def handle_02_2(message: types.Message):
+    n = message.from_user.first_name
+    n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+    z = message.from_user.last_name
+    if z is not None:
+        z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+        x = users.find_one({'id': message.from_user.id})
+        if x is None:
+            users.insert_one({'id': 839954020, 'times': 0})
+        else:
+            users.update_one({'id': 839954020}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 839954020}):
+                await message.reply(F'*{n} {z}* восхваляет 02 уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
+                                    parse_mode='markdown')
+    else:
+        x = users.find_one({'id': message.from_user.id})
+        if x is None:
+            users.insert_one({'id': 839954020, 'times': 0})
+        else:
+            users.update_one({'id': 839954020}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 839954020}):
+                await message.reply(F'*{n}* восхваляет 02 уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                                     parse_mode='markdown')
 
 
