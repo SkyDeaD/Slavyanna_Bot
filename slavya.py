@@ -765,7 +765,7 @@ async def handle_02_1(message: types.Message):
                                     parse_mode='markdown')
 
 
-db.message_handler(chat_id=-1001183567504, user_id=839954020, regexp='слава 02')
+@db.message_handler(chat_id=-1001183567504, user_id=839954020, regexp='слава 02')
 async def handle_02_2(message: types.Message):
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
