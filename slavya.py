@@ -129,9 +129,6 @@ async def help_handler(message):
 
 Так же существуют команды, которые отстуствуют в списке.
 ''', parse_mode='markdown')
-        time.sleep(60)
-        await bot.delete_message(message.chat.id, help_msg.message_id)
-        await bot.delete_message(message.chat.id, message.message_id)
 
 
 @db.message_handler(content_types=['new_chat_members'])
@@ -621,8 +618,9 @@ async def handle_admins(message: types.Message):
     adm = await bot.get_chat_administrators(message.chat.id)
     text = 'Администраторы чата:\n'
     for i in adm:
-        if not i.user.is_bot:
-            text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
+        if i.user.is_bot is False:
+            if i.can_restrict_members is not False:
+                text += f'\nИмя - {i.user.first_name}\nЮзернейм - {i.user.username}\n'
     await message.reply(text)
 
 
