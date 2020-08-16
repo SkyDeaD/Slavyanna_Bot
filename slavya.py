@@ -27,7 +27,7 @@ async def start_handler(message):
 
 
 @db.message_handler(commands=['help'])
-async def help_handler(message):
+async def help_handler(message: types.Message):
     if message.chat.type == 'private':
         q = await bot.get_chat(577096232)
         c = await bot.get_chat(-1001183567504)
@@ -132,7 +132,7 @@ async def help_handler(message):
 
 
 @db.message_handler(content_types=['new_chat_members'])
-async def handler_new_member(message):
+async def handler_new_member(message: types.Message):
     for user in message.new_chat_members:
         if user.id in [1303468919]:
             await bot.send_message(message.chat.id,
@@ -147,7 +147,7 @@ async def handler_new_member(message):
 
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['mute'])
-async def handle_mute(message):
+async def handle_mute(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой комманды.')
@@ -185,8 +185,34 @@ async def handle_mute(message):
     await message.answer_sticker(sticker_mute)
 
 
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['muteall'])
+async def handle_muteall(message: types.Message):
+    if message.from_user.id not in [577096232, 609565291]:
+        return
+    prom = await bot.get_chat_member(message.chat.id, 1303468919)
+    if prom.can_restrict_members is False:
+        return
+    permissions = types.ChatPermissions(can_send_messages=False, can_send_media_messages=False,
+                                        can_send_polls=False, can_send_other_messages=False,
+                                        can_add_web_page_previews=False, can_invite_users=False)
+    await bot.set_chat_permissions(message.chat.id, permissions)
+
+
+@db.message_handler(lambda message: message.chat.type != 'private', commands=['unmuteall'])
+async def handle_unmuteall(message: types.Message):
+    if message.from_user.id not in [577096232, 609565291]:
+        return
+    prom = await bot.get_chat_member(message.chat.id, 1303468919)
+    if prom.can_restrict_members is False:
+        return
+    permissions = types.ChatPermissions(can_send_messages=True, can_send_media_messages=True,
+                                        can_send_polls=True, can_send_other_messages=True,
+                                        can_add_web_page_previews=True, can_invite_users=True)
+    await bot.set_chat_permissions(message.chat.id, permissions)
+
+
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['amute'])
-async def handle_amute(message):
+async def handle_amute(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой комманды.')
@@ -224,7 +250,7 @@ async def handle_amute(message):
 
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['unmute'])
-async def handle_unmute(message):
+async def handle_unmute(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         return
@@ -264,7 +290,7 @@ async def handle_unmute(message):
 
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['promote'])
-async def handle_promote(message):
+async def handle_promote(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -297,7 +323,7 @@ async def handle_promote(message):
 
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['demote'])
-async def handle_demote(message):
+async def handle_demote(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status != 'creator':
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
@@ -1056,7 +1082,9 @@ async def handle_text(message: types.Message):
 Моя милашка - случайная картинка Сильвии из базы;
 /asave - сохранить картинку/гифку Цербера;
 /ksave - сохранить песню группы Кино;
-/csave - сохранить картинку Сильвии.
+/csave - сохранить картинку Сильвии;
+/muteall - запретить отправлять сообщения для всех пользователей, которые не являются администратором;
+/unmuteall - разрешить отправлять сообщения для всех пользователей, которые не являются администратором.
         ''')
 
     elif message.text.lower() == 'цой жив':
