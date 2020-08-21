@@ -196,6 +196,8 @@ async def handle_muteall(message: types.Message):
                                         can_send_polls=False, can_send_other_messages=False,
                                         can_add_web_page_previews=False, can_invite_users=False)
     await bot.set_chat_permissions(message.chat.id, permissions)
+    await message.reply_photo(
+        'AgACAgIAAxkBAAIEuV8_j-DUbimczvqyoJB69p_DKYK8AALFrjEbdoD4SQLuVaxwGTWE9xsIki4AAwEAAwIAA3gAAx9fBQABGwQ')
 
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['unmuteall'])
