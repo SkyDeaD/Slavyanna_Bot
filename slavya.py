@@ -362,9 +362,11 @@ async def handle_kick(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if usera.status not in ['administrator', 'creator']:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
+        print(1)
         return
-    if usera.can_restrict_members is not True:
+    if usera.can_restrict_members is False:
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
+        print(2)
         return
     prom = await bot.get_chat_member(message.chat.id, 1303468919)
     if prom.can_restrict_members is not True:
@@ -399,7 +401,7 @@ async def handle_akick(message: types.Message):
         await message.reply('У Вас недостаточно прав для выполнения этой команды.')
         return
     prom = await bot.get_chat_member(message.chat.id, 1303468919)
-    if prom.can_restrict_members is not True:
+    if prom.can_restrict_members is False:
         await message.reply(
             'Для выполнения данной команды требуются следующие права администратора:\n\n📛Блокировка участников.')
         return
