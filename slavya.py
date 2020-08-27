@@ -977,21 +977,21 @@ async def handle_savya(message: types.Message):
     z = message.from_user.last_name
     if z is not None:
         z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
-        x = users.find_one({'id': message.from_user.id})
+        x = users.find_one({'us_id': message.from_user.id})
         if x is None:
-            users.insert_one({'id': message.from_user.id, 'times': 0})
+            users.insert_one({'us_id': message.from_user.id, 'times': 0})
         else:
-            users.update_one({'id': message.from_user.id}, {'$inc': {'times': 1}})
-            for k in users.find({'id': message.from_user.id}):
+            users.update_one({'us_id': message.from_user.id}, {'$inc': {'times': 1}})
+            for k in users.find({'us_id': message.from_user.id}):
                 await message.reply(F'*{n} {z}* восхваляет Славю уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                                     parse_mode='markdown')
     else:
-        x = users.find_one({'id': message.from_user.id})
+        x = users.find_one({'us_id': message.from_user.id})
         if x is None:
-            users.insert_one({'id': message.from_user.id, 'times': 0})
+            users.insert_one({'us_id': message.from_user.id, 'times': 0})
         else:
-            users.update_one({'id': message.from_user.id}, {'$inc': {'times': 1}})
-            for k in users.find({'id': message.from_user.id}):
+            users.update_one({'us_id': message.from_user.id}, {'$inc': {'times': 1}})
+            for k in users.find({'us_id': message.from_user.id}):
                 await message.reply(F'*{n}* восхваляет Славю уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                                     parse_mode='markdown')
 
