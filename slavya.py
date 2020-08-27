@@ -970,7 +970,7 @@ async def handle_ran(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(chat_id=-1001183567504, regexp='слава Славяне')
+@db.message_handler(chat_id=-1001156894153, regexp='слава Славяне')
 async def handle_savya(message: types.Message):
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
