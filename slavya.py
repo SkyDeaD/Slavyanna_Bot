@@ -712,6 +712,23 @@ async def handle_csave(message: types.Message):
         await message.reply('Данный файл уже сохранён!')
 
 
+@db.message_handler(commands=['slsave'])
+async def handle_slsave(message: types.Message):
+    if message.from_user.id not in [577096232, 609565291]:
+        return
+    if message.reply_to_message is None:
+        return
+    if message.reply_to_message.content_type != "photo":
+        await message.reply('Нужно выбрать фотографию.')
+        return
+    x = users.find_one({'type_slav': 'photo', 'doc_id': message.reply_to_message.photo[-1].file_id})
+    if x is None:
+        users.insert_one({'type_slav': 'photo', 'doc_id': message.reply_to_message.photo[-1].file_id})
+        await message.reply('Файл сохранён!')
+    else:
+        await message.reply('Данный файл уже сохранён!')
+
+
 @db.message_handler(commands=['count'])
 async def handle_count(message: types.Message):
     if message.from_user.id not in [577096232, 609565291]:
@@ -720,6 +737,7 @@ async def handle_count(message: types.Message):
     b = []
     c = []
     d = []
+    q = []
     for i in users.find({'type_cer': 'photo'}):
         a.append(i['doc_id'])
     for g in users.find({'type_cer': 'anim'}):
@@ -728,10 +746,13 @@ async def handle_count(message: types.Message):
         c.append(h['doc_id'])
     for v in users.find({'type_sil': 'photo'}):
         d.append(v['doc_id'])
+    for m in users.find({'type_slav': 'photo'}):
+        q.append(m['doc_id'])
     await message.reply(
         F'На данный момент в базе данных хранится:\n\n\nПо тэгу Цербер:\n' + str(len(a)) + ' ' + 'картинок;\n' + str(
             len(b)) + ' ' + 'gif-анимаций.\n\nПо тэгу Цой жив:\n' + str(
-            len(c)) + ' ' + 'треков группы Кино.\n\nПо тэгу Моя милашка:\n' + str(len(d)) + ' ' + 'картинок.')
+            len(c)) + ' ' + 'треков группы Кино.\n\nПо тэгу Моя милашка:\n' + str(len(d)) + ' ' +
+        'картинок.\n\nПо тэгу Славянка:\n' + str(len(q)) + ' ' + 'картинок.')
 
 
 @db.message_handler(lambda message: message.chat.type != 'private', regexp='фулл')
@@ -949,6 +970,32 @@ async def handle_ran(message: types.Message):
                                     parse_mode='markdown')
 
 
+@db.message_handler(chat_id=-1001183567504, regexp='слава Славяне')
+async def handle_savya(message: types.Message):
+    n = message.from_user.first_name
+    n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+    z = message.from_user.last_name
+    if z is not None:
+        z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+        x = users.find_one({'id': message.from_user.id})
+        if x is None:
+            users.insert_one({'id': message.from_user.id, 'times': 0})
+        else:
+            users.update_one({'id': message.from_user.id}, {'$inc': {'times': 1}})
+            for k in users.find({'id': message.from_user.id}):
+                await message.reply(F'*{n} {z}* восхваляет Славю уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
+                                    parse_mode='markdown')
+    else:
+        x = users.find_one({'id': message.from_user.id})
+        if x is None:
+            users.insert_one({'id': message.from_user.id, 'times': 0})
+        else:
+            users.update_one({'id': message.from_user.id}, {'$inc': {'times': 1}})
+            for k in users.find({'id': message.from_user.id}):
+                await message.reply(F'*{n}* восхваляет Славю уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
+                                    parse_mode='markdown')
+
+
 @db.message_handler(regexp='цербер')
 async def handle_cerber(message: types.Message):
     a = []
@@ -971,6 +1018,17 @@ async def handle_silvia(message: types.Message):
         return
     a = []
     for i in users.find({'type_sil': 'photo'}):
+        a.append(i['doc_id'])
+    p_id = random.choice(a)
+    await message.reply_photo(p_id)
+
+
+@db.message_handler(regexp='Славянка')
+async def handle_silvia(message: types.Message):
+    if message.from_user.id != 609565291:
+        return
+    a = []
+    for i in users.find({'type_slav': 'photo'}):
         a.append(i['doc_id'])
     p_id = random.choice(a)
     await message.reply_photo(p_id)
@@ -1084,9 +1142,11 @@ async def handle_text(message: types.Message):
 Цой жив - случайная песня группы Кино из базы;
 Цербер - случая картинка или gif Цербера (helltaker) из базы;
 Моя милашка - случайная картинка Сильвии из базы;
+Славянка - случайная картинка Слави из базы;
 /asave - сохранить картинку/гифку Цербера;
 /ksave - сохранить песню группы Кино;
 /csave - сохранить картинку Сильвии;
+/slsave - сохранить картинку Слави;
 /muteall - запретить отправлять сообщения для всех пользователей, которые не являются администратором;
 /unmuteall - разрешить отправлять сообщения для всех пользователей, которые не являются администратором.
         ''')
