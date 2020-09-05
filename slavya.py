@@ -1025,8 +1025,7 @@ async def handle_silvia(message: types.Message):
 
 @db.message_handler(regexp='Славянка')
 async def handle_silvia(message: types.Message):
-    if message.from_user.id != 609565291:
-        return
+
     a = []
     for i in users.find({'type_slav': 'photo'}):
         a.append(i['doc_id'])
