@@ -1152,7 +1152,7 @@ async def handle_text(message: types.Message):
 
     elif message.text.lower() == 'цой жив':
         a = []
-        if message.chat.id == 577096232:
+        if message.chat.id == -1001283223823:
             for i in users.find({'type_kino': 'music'}):
                 a.append(i['doc_id'])
             p_id = random.choice(a)
