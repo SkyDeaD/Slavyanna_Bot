@@ -757,7 +757,7 @@ async def handle_count(message: types.Message):
 @db.message_handler(commands=['timetable'])
 async def handle_count(message: types.Message):
      #'Mon' 'Tue' 'Wed' 'Thu' 'Fri' 'Sat' 'Sun'
-    if message.chat.type != 'private':
+    if message.chat.id != -1001283223823:
         return
     m = time.ctime()
     day = m.split()[0]
