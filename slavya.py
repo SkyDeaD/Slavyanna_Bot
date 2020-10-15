@@ -6,7 +6,7 @@ import pymongo
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
-bot = Bot("1303468919:AAGa9vt8IXsEf1M9SOAUjeN1qwrjv6FEYE0")
+bot = Bot("1303468919:AAFoRtNzZm5xrl401bB05vlQXdY9LkiPlBw")
 db = Dispatcher(bot)
 
 logging.basicConfig(level=logging.INFO)
