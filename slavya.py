@@ -1152,12 +1152,18 @@ async def handle_text(message: types.Message):
 
     elif message.text.lower() == 'цой жив':
         a = []
-        if message.from_user.id not in [577096232, 609565291]:
-            return
-        for i in users.find({'type_kino': 'music'}):
-            a.append(i['doc_id'])
-        p_id = random.choice(a)
-        await message.reply_audio(p_id)
+        if message.chat.id == 577096232:
+            for i in users.find({'type_kino': 'music'}):
+                a.append(i['doc_id'])
+            p_id = random.choice(a)
+            await message.reply_audio(p_id)
+        else:
+            if message.from_user.id not in [577096232, 609565291]:
+                return
+            for i in users.find({'type_kino': 'music'}):
+                a.append(i['doc_id'])
+            p_id = random.choice(a)
+            await message.reply_audio(p_id)
 
     elif message.text.lower() == 'все фото':
         if message.chat.type != 'private':
