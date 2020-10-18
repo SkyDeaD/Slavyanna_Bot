@@ -1,6 +1,9 @@
 import logging
 import random
 import time
+import pytz
+import datetime
+from datetime import datetime
 
 import pymongo
 from aiogram import Bot, Dispatcher, types
@@ -14,6 +17,7 @@ client = pymongo.MongoClient(
     'mongodb+srv://SkyDeaD:GamerVD76@aliceskybotandother-ik6lu.mongodb.net/sl?retryWrites=true&w=majority')
 dbm = client.sl
 users = dbm.users
+
 
 banuser = 0
 admuser = 0
@@ -757,24 +761,22 @@ async def handle_count(message: types.Message):
 @db.message_handler(commands=['timetable'])
 async def handle_count(message: types.Message):
      #'Mon' 'Tue' 'Wed' 'Thu' 'Fri' 'Sat' 'Sun'
-    if message.chat.id != -1001283223823:
-        return
-    m = time.ctime()
-    day = m.split()[0]
-    await message.reply(m)
-    if day == 'Mon':
+    tz = pytz.timezone('Europe/Moscow')
+    m = datetime.now(tz)
+    day = m.weekday()
+    if day == 0:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на понедельник:\n\n9:00-10:30 - физика\n14:45-18:00 - история\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
-    elif day == 'Tue':
+    elif day == 1:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на вторник:\n\n9:30-11:00 - физика\n9:00-10:30 - аяп\n16:30-18:00 - аяп\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
-    elif day == 'Wed':
+    elif day == 2:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\n💠Среда - выходной🎉')
-    elif day == 'Thu':
+    elif day == 3:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на четверг:\n\n10:45-12:15 - введение в аркт\n14:45-18:00 - мат. анализ\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
-    elif day == 'Fri':
+    elif day == 4:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на пятницу:\n\n9:00-10:30 - физика\n10:45-12:15 - начертательная геометрия\n14:45-18:00 - линал\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
-    elif day == 'Sat':
+    elif day == 5:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на субботу:\n\n10:45-12:14 - право\n13:00-14:30 - право\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
-    elif day == 'Sun':
+    elif day == 6:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\n💠Воскресенье - выходной🎉', parse_mode='markdown')
 
 
