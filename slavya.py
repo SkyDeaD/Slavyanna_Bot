@@ -1032,19 +1032,19 @@ async def handle_ran(message: types.Message):
         z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
         x = users.find_one({'id': message.from_user.id})
         if x is None:
-            users.insert_one({'id': 533271886, 'times': 0})
+            users.insert_one({'id': 959178665, 'times': 0})
         else:
-            users.update_one({'id': 533271886}, {'$inc': {'times': 1}})
-            for k in users.find({'id': 533271886}):
+            users.update_one({'id': 959178665}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 959178665}):
                 await message.reply(F'*{n} {z}* блядствует уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                                     parse_mode='markdown')
     else:
         x = users.find_one({'id': message.from_user.id})
         if x is None:
-            users.insert_one({'id': 533271886, 'times': 0})
+            users.insert_one({'id': 959178665, 'times': 0})
         else:
-            users.update_one({'id': 533271886}, {'$inc': {'times': 1}})
-            for k in users.find({'id': 533271886}):
+            users.update_one({'id': 959178665}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 959178665}):
                 await message.reply(F'*{n}* блядствует уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                                     parse_mode='markdown')
 
