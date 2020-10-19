@@ -191,7 +191,7 @@ async def handle_mute(message: types.Message):
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['muteall'])
 async def handle_muteall(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     prom = await bot.get_chat_member(message.chat.id, 1303468919)
     if prom.can_restrict_members is False:
@@ -206,7 +206,7 @@ async def handle_muteall(message: types.Message):
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['unmuteall'])
 async def handle_unmuteall(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     prom = await bot.get_chat_member(message.chat.id, 1303468919)
     if prom.can_restrict_members is False:
@@ -660,7 +660,7 @@ async def handle_admins(message: types.Message):
 
 @db.message_handler(commands=['asave'])
 async def handle_asave(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     if message.reply_to_message is None:
         return
@@ -684,7 +684,7 @@ async def handle_asave(message: types.Message):
 
 @db.message_handler(commands=['ksave'])
 async def handle_ksave(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     if message.reply_to_message is None:
         return
@@ -701,7 +701,7 @@ async def handle_ksave(message: types.Message):
 
 @db.message_handler(commands=['csave'])
 async def handle_csave(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     if message.reply_to_message is None:
         return
@@ -718,7 +718,7 @@ async def handle_csave(message: types.Message):
 
 @db.message_handler(commands=['slsave'])
 async def handle_slsave(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     if message.reply_to_message is None:
         return
@@ -735,7 +735,7 @@ async def handle_slsave(message: types.Message):
 
 @db.message_handler(commands=['count'])
 async def handle_count(message: types.Message):
-    if message.from_user.id not in [577096232, 609565291]:
+    if message.from_user.id not in [577096232, 1270866514]:
         return
     a = []
     b = []
@@ -788,7 +788,7 @@ async def full_ban(message: types.Message):
         'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
 
 
-@db.message_handler(chat_id=[-1001216079799, -1001183567504], user_id=609565291, regexp='цербера хочу')
+@db.message_handler(chat_id=[-1001216079799, -1001183567504], user_id=1270866514, regexp='цербера хочу')
 async def ceph(message: types.Message):
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -797,20 +797,20 @@ async def ceph(message: types.Message):
         z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
         x = users.find_one({'id': message.from_user.id})
         if x is None:
-            users.insert_one({'id': 609565291, 'times': 0})
+            users.insert_one({'id': 1270866514, 'times': 0})
         else:
-            users.update_one({'id': 609565291}, {'$inc': {'times': 1}})
-            for k in users.find({'id': 609565291}):
+            users.update_one({'id': 1270866514}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 1270866514}):
                 await message.reply(
                     F'*{n} {z}* заебал, хочет Цербера уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                     parse_mode='markdown')
     else:
         x = users.find_one({'id': message.from_user.id})
         if x is None:
-            users.insert_one({'id': 609565291, 'times': 0})
+            users.insert_one({'id': 1270866514, 'times': 0})
         else:
-            users.update_one({'id': 609565291}, {'$inc': {'times': 1}})
-            for k in users.find({'id': 609565291}):
+            users.update_one({'id': 1270866514}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 1270866514}):
                 await message.reply(F'*{n}* заебал, хочет Цербера уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
                                     parse_mode='markdown')
 
@@ -1041,7 +1041,7 @@ async def handle_cerber(message: types.Message):
 
 @db.message_handler(regexp='моя милашка')
 async def handle_silvia(message: types.Message):
-    if message.from_user.id != 609565291:
+    if message.from_user.id != 1270866514:
         return
     a = []
     for i in users.find({'type_sil': 'photo'}):
@@ -1158,7 +1158,7 @@ async def handle_text(message: types.Message):
     elif message.text.lower() == 'помощь':
         if message.chat.type != 'private':
             return
-        if message.from_user.id not in [577096232, 609565291]:
+        if message.from_user.id not in [577096232, 1270866514]:
             return
         await message.reply('''
 Привет, админ! Сейчас доступны команды:
@@ -1185,7 +1185,7 @@ async def handle_text(message: types.Message):
             p_id = random.choice(a)
             await message.reply_audio(p_id)
         else:
-            if message.from_user.id not in [577096232, 609565291]:
+            if message.from_user.id not in [577096232, 1270866514]:
                 return
             for i in users.find({'type_kino': 'music'}):
                 a.append(i['doc_id'])
@@ -1195,7 +1195,7 @@ async def handle_text(message: types.Message):
     elif message.text.lower() == 'все фото':
         if message.chat.type != 'private':
             return
-        if message.from_user.id not in [577096232, 609565291]:
+        if message.from_user.id not in [577096232, 1270866514]:
             return
         for i in users.find({'type_cer': 'photo'}):
             await message.answer_photo(i['doc_id'])
@@ -1205,7 +1205,7 @@ async def handle_text(message: types.Message):
     elif message.text.lower() == 'вся музыка':
         if message.chat.type != 'private':
             return
-        if message.from_user.id not in [577096232, 609565291]:
+        if message.from_user.id not in [577096232, 1270866514]:
             return
         for i in users.find({'type_kino': 'music'}):
             await message.answer_audio(i['doc_id'])
