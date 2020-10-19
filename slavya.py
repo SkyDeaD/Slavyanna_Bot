@@ -1023,6 +1023,32 @@ async def handle_savya(message: types.Message):
                                     parse_mode='markdown')
 
 
+@db.message_handler(chat_id=-1001283223823, user_id=959178665, regexp='бля')
+async def handle_ran(message: types.Message):
+    n = message.from_user.first_name
+    n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+    z = message.from_user.last_name
+    if z is not None:
+        z = z.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
+        x = users.find_one({'id': message.from_user.id})
+        if x is None:
+            users.insert_one({'id': 533271886, 'times': 0})
+        else:
+            users.update_one({'id': 533271886}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 533271886}):
+                await message.reply(F'*{n} {z}* блядствует уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
+                                    parse_mode='markdown')
+    else:
+        x = users.find_one({'id': message.from_user.id})
+        if x is None:
+            users.insert_one({'id': 533271886, 'times': 0})
+        else:
+            users.update_one({'id': 533271886}, {'$inc': {'times': 1}})
+            for k in users.find({'id': 533271886}):
+                await message.reply(F'*{n}* блядствует уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
+                                    parse_mode='markdown')
+
+
 @db.message_handler(regexp='цербер')
 async def handle_cerber(message: types.Message):
     a = []
