@@ -1141,23 +1141,13 @@ async def handle_text(message: types.Message):
         if message.reply_to_message is None:
             return
         if message.from_user.id != message.reply_to_message.from_user.id:
-            user_1 = await bot.get_chat_member(message.chat.id, message.from_user.id)
-            user_2 = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-            if user_1.can_restrict_members is False:
-                try:
-                    await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time.time())
-                except:
-                    pass
-            else:
-                pass
-            if user_2.can_restrict_members is False:
-                try:
-                    await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
+            user1 = await bot.get_chat_member(message.chat.id, message.from_user.id)
+            user2 = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
+            if user1.status not in ['administrator', 'creator']:
+                await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time.time())
+            if user2.status not in ['administrator', 'creator']:
+                await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
                                                until_date=time.time())
-                except:
-                    pass
-            else:
-                pass
             await bot.send_message(message.chat.id,
                                    F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.',
                                    reply_to_message_id=message.message_id, parse_mode='markdown')
