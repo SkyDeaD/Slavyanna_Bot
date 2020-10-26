@@ -537,6 +537,9 @@ async def handle_purge(message: types.Message):
         await message.reply(
             'Для выполнения данной команды требуются следующие права администратора:\n\n❌Удаление сообщений.')
         return
+    if usera.can_delete_messages is False:
+        await message.reply('У Вас недостаточно прав для выполнения этой команды.')
+        return
     if message.reply_to_message is None:
         await message.reply('Выберите сообщение, ниже которого будет очищен чат.')
         return
@@ -1140,11 +1143,15 @@ async def handle_text(message: types.Message):
         if message.from_user.id != message.reply_to_message.from_user.id:
             user_1 = await bot.get_chat_member(message.chat.id, message.from_user.id)
             user_2 = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-            if user_1.status not in ['administrator', 'creator']:
+            try:
                 await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time.time())
-            if user_2.status not in ['administrator', 'creator']:
+            except:
+                pass
+            try:
                 await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
                                                until_date=time.time())
+            except:
+                pass
             await bot.send_message(message.chat.id,
                                    F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.',
                                    reply_to_message_id=message.message_id, parse_mode='markdown')
