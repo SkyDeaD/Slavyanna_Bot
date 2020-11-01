@@ -972,7 +972,7 @@ async def handle_sit(message: types.Message):
                                     parse_mode='markdown')
 
 
-@db.message_handler(chat_id=-1001183567504, user_id=533271886, regexp='хвала рандому')
+@db.message_handler(chat_id=-1001283223823, user_id=533271886, regexp='бля')
 async def handle_ran(message: types.Message):
     n = message.from_user.first_name
     n = n.replace('*', '').replace('_', '').replace('`', '').replace('~', '')
@@ -994,8 +994,8 @@ async def handle_ran(message: types.Message):
         else:
             users.update_one({'id': 533271886}, {'$inc': {'times': 1}})
             for k in users.find({'id': 533271886}):
-                await message.reply(F'*{n}* восхваляет Рандом уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',
-                                    parse_mode='markdown')
+                await message.reply(F'*{n}* восхваляет Рандом уже в*' + ' ' + str(k['times']) + ' ' + '*раз.',parse_mode='markdown')
+
 
 
 @db.message_handler(chat_id=-1001156894153, regexp='слава Славяне')
