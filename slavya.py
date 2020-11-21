@@ -23,6 +23,7 @@ banuser = 0
 admuser = 0
 userstatus = 0
 useradm = 0
+unmuteuser = 0; key = 0
 
 
 @db.message_handler(lambda message: message.chat.type == 'private', commands=['start'])
@@ -137,18 +138,28 @@ async def help_handler(message: types.Message):
 
 @db.message_handler(content_types=['new_chat_members'])
 async def handler_new_member(message: types.Message):
+    global unmuteuser
+    global key
     for user in message.new_chat_members:
         if user.id in [1303468919]:
             await bot.send_message(message.chat.id,
                                    'Привет! Я - бот-администратор Славя. Для полноценный работы выдай мне следующие разрешения:\n\n〽️Изменения профиля группы\n❌Удаление сообщений\n📛Блокировка участников\n📨Пригласительные ссылки\n📌Закрепление сообщений\n⭐️Добавление администраторов')
         else:
             for user in message.new_chat_members:
+                unmuteuser = user.id
                 sti = open('welcome.webp', 'rb')
+                keyboard = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton(text='+++++', callback_data='3')
+                key = keyboard.add(item1)
                 await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
                 await bot.send_message(message.chat.id,
-                                       F'Добро пожаловать в чат [{message.chat.title}](https://t.me/{message.chat.username}), [{user.first_name}](tg://user?id={user.id})!\n\nПредлагаю ознакомиться с правилами:\n👉/rules👈',
-                                       reply_to_message_id=message.message_id, parse_mode='markdown')
-
+                                       F'Добро пожаловать в чат [{message.chat.title}](https://t.me/{message.chat.username}), [{user.first_name}](tg://user?id={user.id})!\n\nПредлагаю ознакомиться с правилами:\n👉/rules👈\n\n\nЧтобы начать общаться, нажми на кнопку',
+                                       reply_to_message_id=message.message_id, reply_markup=keyboard, parse_mode='markdown')
+                await bot.restrict_chat_member(message.chat.id, user.id,
+                                               until_date=time.time())
+                keyboard = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton(text='+++++', callback_data='3')
+                key = keyboard.add(item1)
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['mute'])
 async def handle_mute(message: types.Message):
@@ -767,7 +778,7 @@ async def handle_count(message: types.Message):
     m = datetime.now(tz)
     day = m.weekday()
     if day == 0:
-        await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на понедельник:\n\n9:30-11:00 - физика\n14:45-18:00 - история\n\n\nРасписание на вторник:\n\n9:00-10:30 - аяп\n16:30-18:00 - аяп\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
+        await message.reply('''Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на понедельник:\n\n9:30-11:00 - физика\n14:45-18:00 - история\n\n\nРасписание на вторник:\n\n9:00-10:30 - аяп\n16:30-18:00 - аяп\n\n\n*🛑Время МОСКОВСКОЕ🛑*''', parse_mode='markdown')
     elif day == 1:
         await message.reply('Данное расписание для *⚠️ПЕРВОГО⚠️ института.*\n\n\nРасписание на вторник:\n\n9:00-10:30 - аяп\n16:30-18:00 - аяп\n\n\nРасписание на среду:\n\n16:30-18:00 - английский язык (для группы А)\n\n\n*🛑Время МОСКОВСКОЕ🛑*', parse_mode='markdown')
     elif day == 2:
@@ -1131,6 +1142,18 @@ async def button_reaction(call: types.CallbackQuery):
             await bot.send_animation(chat_id=call.message.chat.id,
                                      animation='CgACAgIAAxkBAAIBe18p1NYZODgJhLLQq28aHskjKP9cAALpAwACgyVYS3rEbZUfdbcKGgQ',
                                      reply_to_message_id=call.message.message_id)
+
+
+@db.callback_query_handler(text='3')
+async def button_reaction(call: types.CallbackQuery):
+    global unmuteuser
+    if call.message:
+        if call.from_user.id == unmuteuser:
+            await bot.restrict_chat_member(chat_id=call.message.chat.id, user_id=unmuteuser,
+                                           can_send_messages=True,
+                                           can_send_media_messages=True, can_send_other_messages=True,
+                                           can_add_web_page_previews=True)
+            await call.message.delete_reply_markup()
 
 
 @db.message_handler(content_types=['text'])
