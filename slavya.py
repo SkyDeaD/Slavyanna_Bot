@@ -149,17 +149,14 @@ async def handler_new_member(message: types.Message):
                 unmuteuser = user.id
                 sti = open('welcome.webp', 'rb')
                 keyboard = types.InlineKeyboardMarkup(row_width=1)
-                item1 = types.InlineKeyboardButton(text='+++++', callback_data='3')
+                item1 = types.InlineKeyboardButton(text='Начать общаться', callback_data='3')
                 key = keyboard.add(item1)
                 await bot.send_sticker(message.chat.id, sti, reply_to_message_id=message.message_id)
                 await bot.send_message(message.chat.id,
-                                       F'Добро пожаловать в чат [{message.chat.title}](https://t.me/{message.chat.username}), [{user.first_name}](tg://user?id={user.id})!\n\nПредлагаю ознакомиться с правилами:\n👉/rules👈\n\n\nЧтобы начать общаться, нажми на кнопку',
+                                       F'Добро пожаловать в чат [{message.chat.title}](https://t.me/{message.chat.username}), [{user.first_name}](tg://user?id={user.id})!\n\nПредлагаю ознакомиться с правилами:\n👉/rules👈',
                                        reply_to_message_id=message.message_id, reply_markup=keyboard, parse_mode='markdown')
                 await bot.restrict_chat_member(message.chat.id, user.id,
                                                until_date=time.time())
-                keyboard = types.InlineKeyboardMarkup(row_width=1)
-                item1 = types.InlineKeyboardButton(text='+++++', callback_data='3')
-                key = keyboard.add(item1)
 
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['mute'])
 async def handle_mute(message: types.Message):
