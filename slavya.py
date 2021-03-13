@@ -897,12 +897,6 @@ async def handle_count(message: types.Message):
 
 
 
-@db.message_handler(lambda message: message.chat.type != 'private', regexp='фулл')
-async def full_ban(message: types.Message):
-    await message.reply_photo(
-        'AgACAgIAAxkBAAPmXyGM-GqjlGEabzESpkikWfQRIcIAAgiuMRtGQhBJHQZufSPeAo_6avuULgADAQADAgADeQADq5wCAAEaBA')
-
-
 @db.message_handler(chat_id=[-1001216079799, -1001183567504], user_id=1270866514, regexp='цербера хочу')
 async def ceph(message: types.Message):
     n = message.from_user.first_name
