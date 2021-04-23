@@ -1303,24 +1303,7 @@ async def button_reaction(call: types.CallbackQuery):
 
 @db.message_handler(content_types=['text'])
 async def handle_text(message: types.Message):
-    if message.text.lower() == 'властилинус пенитратус':
-        if message.chat.type == 'private':
-            return
-        if message.reply_to_message is None:
-            return
-        if message.from_user.id != message.reply_to_message.from_user.id:
-            user1 = await bot.get_chat_member(message.chat.id, message.from_user.id)
-            user2 = await bot.get_chat_member(message.chat.id, message.reply_to_message.from_user.id)
-            if user1.status not in ['administrator', 'creator']:
-                await bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time.time())
-            if user2.status not in ['administrator', 'creator']:
-                await bot.restrict_chat_member(message.chat.id, message.reply_to_message.from_user.id,
-                                               until_date=time.time())
-            await bot.send_message(message.chat.id,
-                                   F'*{message.from_user.first_name}* и *{message.reply_to_message.from_user.first_name}* не поделили Ульянин пирожок и были замучены.',
-                                   reply_to_message_id=message.message_id, parse_mode='markdown')
-
-    elif message.text.lower() == 'властилинатус':
+    if message.text.lower() == 'властилинатус':
         prom = await bot.get_chat_member(message.chat.id, 1303468919)
         if prom.can_restrict_members is False:
             await message.reply(
