@@ -149,6 +149,7 @@ async def handler_new_member(message: types.Message):
                                        F'Добро пожаловать в чат [{message.chat.title}](https://t.me/{message.chat.username}), [{user.first_name}](tg://user?id={user.id})!\n\nПредлагаю ознакомиться с правилами:\n👉/rules👈',
                                        reply_to_message_id=message.message_id, parse_mode='markdown')
 
+                
 @db.message_handler(lambda message: message.chat.type != 'private', commands=['mute'])
 async def handle_mute(message: types.Message):
     usera = await bot.get_chat_member(message.chat.id, message.from_user.id)
