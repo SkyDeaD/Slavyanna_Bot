@@ -1,1 +1,1 @@
-bot: python3 slavya.py
+worker: python3 slavya.py
