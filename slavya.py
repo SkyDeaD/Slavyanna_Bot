@@ -5,6 +5,7 @@ import asyncio
 
 import pymongo
 from aiogram import Bot, Dispatcher, types
+from aiogram.dispatcher import FSMContext
 from aiogram.utils import executor
 
 bot = Bot("1303468919:AAFRD35D6ltYLt29zZWaYDNgjT3th7FGrSo")
@@ -1170,6 +1171,11 @@ async def handle_text(message: types.Message):
             return
         for i in users.find({'type_kino': 'music'}):
             await message.answer_audio(i['doc_id'])
+
+
+@db.message_handler(commands=['start'],state='*')
+async def start(message: types.Message, state: FSMContext):
+    print("")
 
 
 if __name__ == '__main__':
